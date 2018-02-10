@@ -1,5 +1,6 @@
 //
-//  ViewController.swift
+//
+//  HomeViewController.swift
 //  SocialApp
 //
 //  Created by Bartosz Pawełczyk on 06.02.2018.
@@ -8,7 +9,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
