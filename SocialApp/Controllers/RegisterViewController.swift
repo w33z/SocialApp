@@ -9,13 +9,14 @@
 import UIKit
 import ABSteppedProgressBar
 import DLRadioButton
+import SVProgressHUD
 
 class RegisterViewController: UIViewController {
     
     var array: [DLRadioButton] = []
     var imagePicker: UIImagePickerController!
+    var selectedBirthDayDate: String = ""
     var genderValue: String! = "Male"
-    var userData = Dictionary<String,Any>()
 
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -52,22 +53,23 @@ class RegisterViewController: UIViewController {
         return label
     }()
     
-    private let usernameLabel: UILabel = {
+    private let emailLabel: UILabel = {
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "USERNAME", attributes: [
+        label.attributedText = NSAttributedString(string: "EMAIL", attributes: [
             NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.6926540799, green: 0.6320258247, blue: 0.8690863715, alpha: 1),
             NSAttributedStringKey.font : AVENIR_MEDIUM
             ])
         return label
     }()
     
-    private let usernameTextField: UITextField = {
+    private let emailTextField: UITextField = {
         let textField = UITextField()
         textField.font = AVENIR_MEDIUM
-        textField.attributedPlaceholder = NSAttributedString(string: "Username...", attributes: [
+        textField.attributedPlaceholder = NSAttributedString(string: "Email...", attributes: [
             NSAttributedStringKey.font : AVENIR_MEDIUM,
             NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             ])
+        textField.keyboardType = .emailAddress
         return textField
     }()
     
@@ -91,13 +93,38 @@ class RegisterViewController: UIViewController {
         return textField
     }()
     
-    private let usernameSeparationLine: UIView = {
+    private let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.attributedText = NSAttributedString(string: "USERNAME", attributes: [
+            NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.6926540799, green: 0.6320258247, blue: 0.8690863715, alpha: 1),
+            NSAttributedStringKey.font : AVENIR_MEDIUM
+            ])
+        return label
+    }()
+    
+    private let usernameTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = AVENIR_MEDIUM
+        textField.attributedPlaceholder = NSAttributedString(string: "Username...", attributes: [
+            NSAttributedStringKey.font : AVENIR_MEDIUM,
+            NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            ])
+        return textField
+    }()
+    
+    private let emailSeparationLine: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         return view
     }()
     
     private let passwordSeparationLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        return view
+    }()
+    
+    private let usernameSeparationLine: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         return view
@@ -145,13 +172,28 @@ class RegisterViewController: UIViewController {
         return checkBox
     }()
     
+    private let birthDayLabel: UILabel = {
+        let label = UILabel()
+        label.attributedText = NSAttributedString(string: "BIRTHDAY", attributes: [
+            NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.6926540799, green: 0.6320258247, blue: 0.8690863715, alpha: 1),
+            NSAttributedStringKey.font : AVENIR_MEDIUM
+            ])
+        return label
+    }()
+    
+    private let datePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = .date
+        dp.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        dp.maximumDate = Date()
+        return dp
+    }()
+    
     private let nextStepButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor.clear
-        let attributtedTitle = NSAttributedString(string: "Next Step", attributes: [
-            NSAttributedStringKey.foregroundColor : UIColor.black,
-            ])
-        button.setAttributedTitle(attributtedTitle, for: .normal)
+        button.setTitle("Next Step", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1), for: .normal)
         button.addTarget(self, action: #selector(nextStepButtonAction(_:)), for: .touchUpInside)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.9196777344, blue: 0.2715115017, alpha: 1)
         return button
@@ -185,9 +227,11 @@ class RegisterViewController: UIViewController {
         
         array.append(checkBoxFemale)
         checkBoxMale.otherButtons = array
+        
+//        selectedBirthDayDate = String(describi ng: Date.ownDateFormat(Date()))
+        selectedBirthDayDate = self.ownDateFormat(Date())
+        print(selectedBirthDayDate)
     }
-    
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -223,10 +267,11 @@ class RegisterViewController: UIViewController {
             equal(\.heightAnchor, to: 25)
             ])
         
-        setUpFirstStep()
-
+        setUpFirstStepConstraints()
+        setUpSecondStepConstraints()
     }
-
+    var firstStep: [UIView] = []
+    var secondStep: [UIView] = []
     
     fileprivate func setUpView() {
         navigationController?.navigationBar.topItem?.title = " "
@@ -235,15 +280,20 @@ class RegisterViewController: UIViewController {
         view.addSubview(backgroundImage)
         view.addSubview(registerForm)
         
-        let firstStep = [avatarChangeButton,uploadPhotoLabel,usernameLabel,usernameTextField,usernameSeparationLine,passwordLabel,passwordTextField,passwordSeparationLine,genderLabel,checkBoxMale,checkBoxFemale]
+        firstStep = [avatarChangeButton,uploadPhotoLabel,emailLabel,emailTextField,emailSeparationLine,passwordLabel,passwordTextField,passwordSeparationLine,genderLabel,checkBoxMale,checkBoxFemale]
         firstStep.forEach({ registerForm.addSubview($0)})
+        firstStep.forEach({$0.isHidden = false})
+        
+        secondStep = [birthDayLabel,datePicker,usernameLabel,usernameTextField,usernameSeparationLine]
+        secondStep.forEach({ registerForm.addSubview($0)})
+        secondStep.forEach({ $0.isHidden = true})
         
         view.addSubview(nextStepButton)
         view.addSubview(progressControl)
 
     }
     
-    fileprivate func setUpFirstStep() {
+    fileprivate func setUpFirstStepConstraints() {
         avatarChangeButton.addConstraints([
             equal(registerForm, \.topAnchor, \.topAnchor, constant: 35),
             equal(registerForm, \.leadingAnchor, constant: 35),
@@ -257,29 +307,29 @@ class RegisterViewController: UIViewController {
             equal(\.heightAnchor, to: 30)
             ])
         
-        usernameLabel.addConstraints([
+        emailLabel.addConstraints([
             equal(avatarChangeButton, \.topAnchor,\.bottomAnchor, constant: 35),
             equal(registerForm, \.leadingAnchor, constant: 40),
             equal(registerForm, \.trailingAnchor, constant: -40),
             ])
         
-        usernameTextField.addConstraints([
-            equal(usernameLabel, \.topAnchor,\.bottomAnchor, constant: 10),
-            equal(usernameLabel, \.leadingAnchor),
-            equal(usernameLabel, \.trailingAnchor),
+        emailTextField.addConstraints([
+            equal(emailLabel, \.topAnchor,\.bottomAnchor, constant: 10),
+            equal(emailLabel, \.leadingAnchor),
+            equal(emailLabel, \.trailingAnchor),
             ])
         
-        usernameSeparationLine.addConstraints([
-            equal(usernameTextField, \.topAnchor,\.bottomAnchor, constant: 10),
-            equal(usernameTextField, \.leadingAnchor),
-            equal(usernameTextField, \.trailingAnchor),
+        emailSeparationLine.addConstraints([
+            equal(emailTextField, \.topAnchor,\.bottomAnchor, constant: 10),
+            equal(emailTextField, \.leadingAnchor),
+            equal(emailTextField, \.trailingAnchor),
             equal(\.heightAnchor, to: 1)
             ])
         
         passwordLabel.addConstraints([
-            equal(usernameSeparationLine, \.topAnchor,\.bottomAnchor, constant: 25),
-            equal(usernameSeparationLine, \.leadingAnchor),
-            equal(usernameSeparationLine, \.trailingAnchor),
+            equal(emailSeparationLine, \.topAnchor,\.bottomAnchor, constant: 25),
+            equal(emailSeparationLine, \.leadingAnchor),
+            equal(emailSeparationLine, \.trailingAnchor),
             ])
         
         passwordTextField.addConstraints([
@@ -316,21 +366,92 @@ class RegisterViewController: UIViewController {
             ])
     }
     
-    @objc fileprivate func nextStepButtonAction(_ sender: UIButton){
+    fileprivate func setUpSecondStepConstraints() {
         
-        guard let userField = usernameTextField.text, let passwordField = passwordTextField.text else { return }
-
+        birthDayLabel.addConstraints([
+            equal(registerForm, \.topAnchor,\.topAnchor, constant: 35),
+            equal(registerForm, \.leadingAnchor, constant: 40),
+            equal(registerForm, \.trailingAnchor, constant: -40),
+            ])
         
-        if userField != "" && passwordField != "" {
-            //TODO ADD PHOTOS
-            userData.updateValue(userField, forKey: "username")
-            userData.updateValue(passwordField, forKey: "password")
-            userData.updateValue(genderValue, forKey: "gender")
-            progressControl.currentIndex += 1
-        }
- 
+        datePicker.addConstraints([
+            equal(birthDayLabel, \.topAnchor,\.topAnchor, constant: 15),
+            equal(registerForm, \.leadingAnchor, constant: 20),
+            equal(registerForm, \.trailingAnchor, constant: -20),
+            ])
+        
+        usernameLabel.addConstraints([
+            equal(datePicker, \.topAnchor,\.bottomAnchor, constant: 15),
+            equal(birthDayLabel, \.leadingAnchor),
+            equal(birthDayLabel, \.trailingAnchor),
+            ])
+        
+        usernameTextField.addConstraints([
+            equal(usernameLabel, \.topAnchor,\.bottomAnchor, constant: 10),
+            equal(usernameLabel, \.leadingAnchor),
+            equal(usernameLabel, \.trailingAnchor),
+            ])
+        
+        usernameSeparationLine.addConstraints([
+            equal(usernameTextField, \.topAnchor,\.bottomAnchor, constant: 10),
+            equal(usernameTextField, \.leadingAnchor),
+            equal(usernameTextField, \.trailingAnchor),
+            equal(\.heightAnchor, to: 1)
+            ])
     }
     
+    @objc fileprivate func nextStepButtonAction(_ sender: UIButton){
+        
+        guard let emailField = emailTextField.text, let passwordField = passwordTextField.text else { return }
+        
+        if emailField != "" && passwordField != "" {
+            //TODO ADD PHOTOS
+
+            progressControl.currentIndex += 1
+            
+            UIView.transition(with: registerForm, duration: 0.5, options: .transitionFlipFromRight, animations: {
+                self.firstStep.forEach({$0.isHidden = true})
+                self.secondStep.forEach({$0.isHidden = false})
+                self.nextStepButton.setTitle("Finish", for: .normal)
+            }, completion: nil)
+        }
+        
+        guard let userField = usernameTextField.text else { return }
+        
+        if userField != "" {
+            progressControl.currentIndex -= 1
+            
+            let profileImage: UIImage
+            
+            if let currentImage = self.avatarChangeButton.currentImage {
+                profileImage = currentImage
+            } else {
+                profileImage = #imageLiteral(resourceName: "Avatar")
+            }
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                SVProgressHUD.show()
+                DispatchQueue.main.async {
+                    AuthService.instance.registerUser(email: emailField, password: passwordField, username: userField, gender: self.genderValue, birthday: self.selectedBirthDayDate, profileImage: profileImage, userCreationComplete: { (success, error) in
+                        if success {                 
+                            SVProgressHUD.dismiss()
+                            self.present(UINavigationController(rootViewController: HomeViewController()), animated: true, completion: nil)
+                        } else {
+                            SVProgressHUD.dismiss()
+                            let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Close", style: .default, handler:{ alert in
+                                self.firstStep.forEach({$0.isHidden = false})
+                                self.secondStep.forEach({$0.isHidden = true})
+                                self.nextStepButton.setTitle("Next Step", for: .normal)
+                            }))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    })
+                }
+            }
+        }
+    }
+
     @objc fileprivate func checkBoxValueChanged(_ sender: DLRadioButton) {
         if sender.isSelected {
             genderValue = sender.titleLabel!.text!
@@ -344,6 +465,10 @@ class RegisterViewController: UIViewController {
         imagePicker.allowsEditing = true
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func datePickerValueChanged(_ sender: UIDatePicker) {
+         selectedBirthDayDate = self.ownDateFormat(sender.date)
     }
 }
 
@@ -364,7 +489,6 @@ extension RegisterViewController: ABSteppedProgressBarDelegate {
         default:
             text = ""
         }
-        
         return text
     }
 }
@@ -372,10 +496,19 @@ extension RegisterViewController: ABSteppedProgressBarDelegate {
 extension RegisterViewController: UINavigationControllerDelegate,UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        if let pickedImage = info[UIImagePickerControllerOriginalImage
+        var selectedImage: UIImage?
+        
+        if let editedImage = info[UIImagePickerControllerEditedImage
             ] as? UIImage{
-            avatarChangeButton.setImage(pickedImage, for: .normal)
+            selectedImage = editedImage
+        } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            selectedImage = originalImage
         }
+        
+        if let selectedImage = selectedImage {
+            avatarChangeButton.setImage(selectedImage, for: .normal)
+        }
+        
         dismiss(animated: true, completion: nil)
     }
     

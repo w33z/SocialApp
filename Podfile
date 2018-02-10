@@ -9,8 +9,10 @@ target 'SocialApp' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
   pod 'ABSteppedProgressBar'
-  pod 'DLRadioButton', '~> 1.4'	
+  pod 'DLRadioButton', '~> 1.4'
+  pod 'SVProgressHUD'
 
   target 'SocialAppTests' do
     inherit! :search_paths

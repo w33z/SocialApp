@@ -17,21 +17,21 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bartekpawelczyk.socialapp</string>
+	<string>pl.bartekpawelczyk.SocialApp</string>
 	<key>PROJECT_ID</key>
 	<string>socialapp-d4dfb</string>
 	<key>STORAGE_BUCKET</key>
 	<string>socialapp-d4dfb.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:5355820306:ios:e7a4fe227d22bc3f</string>
 	<key>DATABASE_URL</key>

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import SVProgressHUD
 
 class AuthViewController: UIViewController {
     
@@ -32,7 +34,7 @@ class AuthViewController: UIViewController {
     
     private let usernameLabel: UILabel = {
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "USERNAME", attributes: [
+        label.attributedText = NSAttributedString(string: "EMAIL", attributes: [
             NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.6926540799, green: 0.6320258247, blue: 0.8690863715, alpha: 1),
             NSAttributedStringKey.font : AVENIR_MEDIUM
         ])
@@ -42,7 +44,7 @@ class AuthViewController: UIViewController {
     private let usernameTextField: UITextField = {
         let textField = UITextField()
         textField.font = AVENIR_MEDIUM
-        textField.attributedPlaceholder = NSAttributedString(string: "Username...", attributes: [
+        textField.attributedPlaceholder = NSAttributedString(string: "Email...", attributes: [
             NSAttributedStringKey.font : AVENIR_MEDIUM,
             NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         ])
@@ -106,6 +108,11 @@ class AuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if Auth.auth().currentUser != nil {
+            dismiss(animated: true, completion: nil)
+        }
+        
         self.moveViewWithKeyboard()
         setUpView()
         setUpConstrains()
@@ -222,8 +229,30 @@ class AuthViewController: UIViewController {
     }
     
     @objc fileprivate func loginButtonAction(_ sender: UIButton) {
-        print("login")
+        
+        guard let usernameField = usernameTextField.text,let passwordField = passwordTextField.text else { return }
+        
+        if usernameField != "" && passwordField != "" {
+            DispatchQueue.global(qos: .userInitiated).async {
+                SVProgressHUD.show()
+                DispatchQueue.main.async {
+                    AuthService.instance.loginUser(email: usernameField, password: passwordField, loginComplete: { (success, error) in
+                        if success {
+                            SVProgressHUD.dismiss()
+                            self.present(UINavigationController(rootViewController: HomeViewController()), animated: true, completion: nil)
+                        } else {
+                            SVProgressHUD.dismiss()
+                            let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    })
+                }
+            }
+        }
     }
+    
+    
     
     @objc fileprivate func registrationButtonAction(_ sender: UIButton) {
         let registerVC = RegisterViewController()
