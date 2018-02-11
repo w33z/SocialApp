@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        try! Auth.auth().signOut()
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: AuthViewController())
         } else {

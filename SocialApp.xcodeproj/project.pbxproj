@@ -23,6 +23,9 @@
 		258F1654202A0C6D001824FB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F1653202A0C6D001824FB /* AuthService.swift */; };
 		258F1656202A0CBD001824FB /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F1655202A0CBD001824FB /* RegisterViewController.swift */; };
 		258F1658202A0E64001824FB /* UIViewControllerPresentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F1657202A0E64001824FB /* UIViewControllerPresentExtension.swift */; };
+		25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6860320308E1300C0EC4B /* NewMessageCollectionViewCell.swift */; };
+		25E686062030B23800C0EC4B /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E686052030B23800C0EC4B /* MessageTableViewCell.swift */; };
+		25E6860B2030DF3600C0EC4B /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6860A2030DF3600C0EC4B /* Message.swift */; };
 		7909A920FC2AC3852DFA1A14 /* Pods_SocialAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BB94C7B95177532FB1AAAD /* Pods_SocialAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +60,9 @@
 		258F1653202A0C6D001824FB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		258F1655202A0CBD001824FB /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		258F1657202A0E64001824FB /* UIViewControllerPresentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPresentExtension.swift; sourceTree = "<group>"; };
+		25E6860320308E1300C0EC4B /* NewMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		25E686052030B23800C0EC4B /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		25E6860A2030DF3600C0EC4B /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		2FB67AE87370B579F7C12F92 /* Pods_SocialApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAA2CD96D54596EDFB2EA9C /* Pods-SocialAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocialAppTests/Pods-SocialAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		55D8151E8210BB5D28480C28 /* Pods-SocialApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocialApp/Pods-SocialApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +129,7 @@
 				258F16452029E3F2001824FB /* Extensions */,
 				258F16442029DBCA001824FB /* Controllers */,
 				258F1650202A0A2E001824FB /* View */,
+				25E686092030DF1D00C0EC4B /* Model */,
 				258F16222029D9B9001824FB /* AppDelegate.swift */,
 				258F16262029D9B9001824FB /* Main.storyboard */,
 				258F16292029D9B9001824FB /* Assets.xcassets */,
@@ -182,8 +189,18 @@
 		258F1650202A0A2E001824FB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				25E6860320308E1300C0EC4B /* NewMessageCollectionViewCell.swift */,
+				25E686052030B23800C0EC4B /* MessageTableViewCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		25E686092030DF1D00C0EC4B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				25E6860A2030DF3600C0EC4B /* Message.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5BCD1B73FF9A360BAB5E1F19 /* Frameworks */ = {
@@ -423,12 +440,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				258F16472029E462001824FB /* UIViewForCreatingNSLayoutContraints.swift in Sources */,
+				25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */,
 				258F16252029D9B9001824FB /* HomeViewController.swift in Sources */,
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
 				258F1658202A0E64001824FB /* UIViewControllerPresentExtension.swift in Sources */,
+				25E686062030B23800C0EC4B /* MessageTableViewCell.swift in Sources */,
 				2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */,
 				258F1656202A0CBD001824FB /* RegisterViewController.swift in Sources */,
 				258F16232029D9B9001824FB /* AppDelegate.swift in Sources */,
+				25E6860B2030DF3600C0EC4B /* Message.swift in Sources */,
 				258F164A2029E4F0001824FB /* DataService.swift in Sources */,
 				258F164F2029FBE4001824FB /* Constants.swift in Sources */,
 				258F1654202A0C6D001824FB /* AuthService.swift in Sources */,

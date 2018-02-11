@@ -12,4 +12,6 @@ import UIKit
 //Fonts
 let AVENIR_MEDIUM = UIFont(name: "Avenir-Medium", size: 14)!
 
-
+// cells Reuse Identifiers
+let COLLECTIONVIEW_NEW_MESSEAGES = "newMessageCell"
+let TABLEVIEW_MESSAGE_CELL = "messageCell"

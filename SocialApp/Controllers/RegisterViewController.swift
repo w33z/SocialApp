@@ -199,6 +199,16 @@ class RegisterViewController: UIViewController {
         return button
     }()
     
+    private let finishStepButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.clear
+        button.setTitle("Finish", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1), for: .normal)
+        button.addTarget(self, action: #selector(finishStepButtonAction(_:)), for: .touchUpInside)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.9196777344, blue: 0.2715115017, alpha: 1)
+        return button
+    }()
+    
     private let progressControl: ABSteppedProgressBar = {
         let pc = ABSteppedProgressBar()
         pc.numberOfPoints = 2
@@ -227,10 +237,8 @@ class RegisterViewController: UIViewController {
         
         array.append(checkBoxFemale)
         checkBoxMale.otherButtons = array
-        
-//        selectedBirthDayDate = String(describi ng: Date.ownDateFormat(Date()))
+
         selectedBirthDayDate = self.ownDateFormat(Date())
-        print(selectedBirthDayDate)
     }
     
     override func didReceiveMemoryWarning() {
@@ -253,13 +261,6 @@ class RegisterViewController: UIViewController {
             equal(view, \.bottomAnchor,\.bottomAnchor, constant: -88),
             ])
         
-        nextStepButton.addConstraints([
-            equal(registerForm, \.bottomAnchor),
-            equal(registerForm, \.leadingAnchor),
-            equal(registerForm, \.trailingAnchor),
-            equal(\.heightAnchor, to: 65)
-            ])
-        
         progressControl.addConstraints([
             equal(registerForm, \.leadingAnchor, constant: 100),
             equal(registerForm, \.trailingAnchor, constant: -100),
@@ -280,15 +281,14 @@ class RegisterViewController: UIViewController {
         view.addSubview(backgroundImage)
         view.addSubview(registerForm)
         
-        firstStep = [avatarChangeButton,uploadPhotoLabel,emailLabel,emailTextField,emailSeparationLine,passwordLabel,passwordTextField,passwordSeparationLine,genderLabel,checkBoxMale,checkBoxFemale]
+        firstStep = [avatarChangeButton,uploadPhotoLabel,emailLabel,emailTextField,emailSeparationLine,passwordLabel,passwordTextField,passwordSeparationLine,genderLabel,checkBoxMale,checkBoxFemale,nextStepButton]
         firstStep.forEach({ registerForm.addSubview($0)})
         firstStep.forEach({$0.isHidden = false})
         
-        secondStep = [birthDayLabel,datePicker,usernameLabel,usernameTextField,usernameSeparationLine]
+        secondStep = [birthDayLabel,datePicker,usernameLabel,usernameTextField,usernameSeparationLine,finishStepButton]
         secondStep.forEach({ registerForm.addSubview($0)})
         secondStep.forEach({ $0.isHidden = true})
         
-        view.addSubview(nextStepButton)
         view.addSubview(progressControl)
 
     }
@@ -364,6 +364,13 @@ class RegisterViewController: UIViewController {
             equal(\.heightAnchor, to: 25),
             equal(\.widthAnchor, to: 75)
             ])
+        
+        nextStepButton.addConstraints([
+            equal(registerForm, \.bottomAnchor),
+            equal(registerForm, \.leadingAnchor),
+            equal(registerForm, \.trailingAnchor),
+            equal(\.heightAnchor, to: 65)
+            ])
     }
     
     fileprivate func setUpSecondStepConstraints() {
@@ -398,6 +405,13 @@ class RegisterViewController: UIViewController {
             equal(usernameTextField, \.trailingAnchor),
             equal(\.heightAnchor, to: 1)
             ])
+        
+        finishStepButton.addConstraints([
+            equal(registerForm, \.bottomAnchor),
+            equal(registerForm, \.leadingAnchor),
+            equal(registerForm, \.trailingAnchor),
+            equal(\.heightAnchor, to: 65)
+            ])
     }
     
     @objc fileprivate func nextStepButtonAction(_ sender: UIButton){
@@ -405,21 +419,22 @@ class RegisterViewController: UIViewController {
         guard let emailField = emailTextField.text, let passwordField = passwordTextField.text else { return }
         
         if emailField != "" && passwordField != "" {
-            //TODO ADD PHOTOS
 
             progressControl.currentIndex += 1
             
-            UIView.transition(with: registerForm, duration: 0.5, options: .transitionFlipFromRight, animations: {
+            UIView.transition(with: registerForm, duration: 0.5, options: .transitionCrossDissolve, animations: {
                 self.firstStep.forEach({$0.isHidden = true})
                 self.secondStep.forEach({$0.isHidden = false})
-                self.nextStepButton.setTitle("Finish", for: .normal)
             }, completion: nil)
         }
-        
+    }
+    
+    @objc fileprivate func finishStepButtonAction(_ sender: UIButton){
+        guard let emailField = emailTextField.text, let passwordField = passwordTextField.text else { return }
+ 
         guard let userField = usernameTextField.text else { return }
         
         if userField != "" {
-            progressControl.currentIndex -= 1
             
             let profileImage: UIImage
             
@@ -428,12 +443,12 @@ class RegisterViewController: UIViewController {
             } else {
                 profileImage = #imageLiteral(resourceName: "Avatar")
             }
-
+            
             DispatchQueue.global(qos: .userInitiated).async {
                 SVProgressHUD.show()
                 DispatchQueue.main.async {
                     AuthService.instance.registerUser(email: emailField, password: passwordField, username: userField, gender: self.genderValue, birthday: self.selectedBirthDayDate, profileImage: profileImage, userCreationComplete: { (success, error) in
-                        if success {                 
+                        if success {
                             SVProgressHUD.dismiss()
                             self.present(UINavigationController(rootViewController: HomeViewController()), animated: true, completion: nil)
                         } else {
@@ -442,7 +457,6 @@ class RegisterViewController: UIViewController {
                             alert.addAction(UIAlertAction(title: "Close", style: .default, handler:{ alert in
                                 self.firstStep.forEach({$0.isHidden = false})
                                 self.secondStep.forEach({$0.isHidden = true})
-                                self.nextStepButton.setTitle("Next Step", for: .normal)
                             }))
                             self.present(alert, animated: true, completion: nil)
                         }

@@ -9,16 +9,91 @@
 import UIKit
 
 class MessageTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    private let avatarPicture: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = #imageLiteral(resourceName: "Avatar")
+        imageView.layer.cornerRadius = 25
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.2027771832)
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    private let senderTitle: UILabel = {
+        let label = UILabel()
+        label.font = AVENIR_MEDIUM
+        label.textColor = #colorLiteral(red: 0.7531887889, green: 0.6876951456, blue: 0.9077157378, alpha: 1)
+        label.text = "Name Surname"
+        return label
+    }()
+    
+    private let timeAgoLabel: UILabel = {
+        let label = UILabel()
+        label.font = AVENIR_MEDIUM.withSize(10)
+        label.textColor = #colorLiteral(red: 0.7531887889, green: 0.6876951456, blue: 0.9077157378, alpha: 1)
+        label.text = "2 days ago"
+        return label
+    }()
+    
+    private let messageText: UILabel = {
+        let label = UILabel()
+        label.font = AVENIR_MEDIUM
+        label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        label.text = "Name Surname Name Surname Name SurnameName Surname"
+        return label
+    }()
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        addViews()
+        setUpConstraints()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    fileprivate func addViews(){
+        backgroundColor = UIColor.clear
+        
+        addSubview(avatarPicture)
+        addSubview(senderTitle)
+        addSubview(timeAgoLabel)
+        addSubview(messageText)
+    }
+    
+    fileprivate func setUpConstraints(){
+        
+        avatarPicture.addConstraints([
+            equal(contentView, \.topAnchor, \.bottomAnchor, constant: 10),
+            equal(contentView, \.leadingAnchor, constant: 35),
+            equal(\.heightAnchor, to: 50),
+            equal(\.widthAnchor, to: 50)
+            ])
+        
+        senderTitle.addConstraints([
+            equal(contentView, \.topAnchor, \.bottomAnchor, constant: 15),
+            equal(avatarPicture, \.leftAnchor, \.rightAnchor, constant: 15),
+            equal(\.heightAnchor, to: 20),
+            equal(\.widthAnchor, to: 120)
+            ])
 
-        // Configure the view for the selected state
+        timeAgoLabel.addConstraints([
+            equal(senderTitle, \.centerYAnchor),
+            equal(senderTitle, \.leftAnchor, \.rightAnchor, constant: 100),
+            equal(\.heightAnchor, to: 20),
+            equal(\.widthAnchor, to: 100)
+            ])
+        
+        messageText.addConstraints([
+            equal(senderTitle, \.topAnchor, \.bottomAnchor, constant: 10),
+            equal(avatarPicture, \.leftAnchor, \.rightAnchor, constant: 15),
+            equal(\.heightAnchor, to: 20),
+            equal(\.widthAnchor, to: 220)
+            ])
     }
 
 }
