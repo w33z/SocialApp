@@ -34,4 +34,30 @@ class DataService {
     func createDBUser(uid: String,userData: Dictionary<String,Any>) {
         REF_USERS.child(uid).updateChildValues(userData)
     }
+    
+    func fetchDBUsers(handler: @escaping (_ users: [User]) -> ()){
+        REF_USERS.observe(.value, with: { (snapshot) in
+            
+            var userArray = [User]()
+            
+            guard let usersSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            for user in usersSnapshot {
+                let username = user.childSnapshot(forPath: "username").value as! String
+                let email = user.childSnapshot(forPath: "email").value as! String
+                let avatar = user.childSnapshot(forPath: "profileImageURL").value as! String
+                let gender = user.childSnapshot(forPath: "gender").value as! String
+                let birthday = user.childSnapshot(forPath: "birthday").value as! String
+                
+                let userTemp = User(username: username, email: email, profileImage: avatar, gender: gender, birthday: birthday)
+                userArray.append(userTemp)
+            }
+            
+            handler(userArray)
+
+        }, withCancel: nil)
+    }
+    
+    
+    
 }

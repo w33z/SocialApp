@@ -23,7 +23,7 @@ class AuthService {
             let imageName = NSUUID().uuidString
             let storageRef = DataService.instance.REF_STORAGE.child("profile_images").child("\(imageName).png")
             
-            if let uploadData = UIImagePNGRepresentation(profileImage) {
+            if let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
                 
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     

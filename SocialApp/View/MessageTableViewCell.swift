@@ -34,6 +34,7 @@ class MessageTableViewCell: UITableViewCell {
         label.font = AVENIR_MEDIUM.withSize(10)
         label.textColor = #colorLiteral(red: 0.7531887889, green: 0.6876951456, blue: 0.9077157378, alpha: 1)
         label.text = "2 days ago"
+        label.textAlignment = .right
         return label
     }()
     
@@ -83,7 +84,7 @@ class MessageTableViewCell: UITableViewCell {
 
         timeAgoLabel.addConstraints([
             equal(senderTitle, \.centerYAnchor),
-            equal(senderTitle, \.leftAnchor, \.rightAnchor, constant: 100),
+            equal(senderTitle, \.leftAnchor, \.rightAnchor, constant: 15),
             equal(\.heightAnchor, to: 20),
             equal(\.widthAnchor, to: 100)
             ])

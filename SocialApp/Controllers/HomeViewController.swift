@@ -11,7 +11,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    var messages: [Message] = []
+    var messages = [Message]()
+    var users = [User]()
     
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -100,7 +101,7 @@ class HomeViewController: UIViewController {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "newMessage"), for: .normal)
         button.contentMode = .scaleAspectFill
-        //        button.addTarget(self, action: #selector(movetable), for: .touchUpInside)
+        button.addTarget(self, action: #selector(newMessageButtonAction), for: .touchUpInside)
         return button
     }()
     
@@ -116,6 +117,9 @@ class HomeViewController: UIViewController {
         setUpView()
         setUpConstrains()
         
+        DataService.instance.fetchDBUsers { (users) in
+            self.users = users
+        }
         
     }
 
@@ -200,6 +204,18 @@ class HomeViewController: UIViewController {
         let menuButtonNavigation = UIBarButtonItem(customView: menuButton)
         navigationItem.setLeftBarButton(menuButtonNavigation, animated: true)
     }
+    
+    @objc fileprivate func newMessageButtonAction(_ sender: UIButton) {
+        let newMessageVC = NewMessageTableViewController()
+        newMessageVC.homeVC = self
+        let navController = UINavigationController(rootViewController: newMessageVC)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    func showTypingMessageVC(_ user: User){
+        let chatVC = ChatViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(chatVC, animated: true)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -236,6 +252,12 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(70)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = self.users[indexPath.row]
+        self.showTypingMessageVC(user)
+        print(indexPath)
     }
     
 }

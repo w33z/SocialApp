@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		15201D0B821D4E160F67D5A5 /* Pods_SocialApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB67AE87370B579F7C12F92 /* Pods_SocialApp.framework */; };
 		2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25531559202F5BFC004B0D3D /* OwnDateFormat.swift */; };
+		2577F4592031EFE0001FED09 /* NewMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F4582031EFE0001FED09 /* NewMessageTableViewController.swift */; };
+		2577F45B2031F349001FED09 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45A2031F349001FED09 /* User.swift */; };
+		2577F45D2031FD8E001FED09 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45C2031FD8E001FED09 /* UserTableViewCell.swift */; };
+		2577F45F20320693001FED09 /* CacheImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45E20320693001FED09 /* CacheImageView.swift */; };
+		2577F46120320DE2001FED09 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46020320DE2001FED09 /* ChatViewController.swift */; };
 		258F16232029D9B9001824FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16222029D9B9001824FB /* AppDelegate.swift */; };
 		258F16252029D9B9001824FB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16242029D9B9001824FB /* HomeViewController.swift */; };
 		258F16282029D9B9001824FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258F16262029D9B9001824FB /* Main.storyboard */; };
@@ -42,6 +47,11 @@
 /* Begin PBXFileReference section */
 		0116B7186547E057B5A3B253 /* Pods-SocialApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialApp/Pods-SocialApp.debug.xcconfig"; sourceTree = "<group>"; };
 		25531559202F5BFC004B0D3D /* OwnDateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnDateFormat.swift; sourceTree = "<group>"; };
+		2577F4582031EFE0001FED09 /* NewMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageTableViewController.swift; sourceTree = "<group>"; };
+		2577F45A2031F349001FED09 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2577F45C2031FD8E001FED09 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		2577F45E20320693001FED09 /* CacheImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImageView.swift; sourceTree = "<group>"; };
+		2577F46020320DE2001FED09 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		258F161F2029D9B9001824FB /* SocialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		258F16222029D9B9001824FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		258F16242029D9B9001824FB /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +165,8 @@
 				258F16242029D9B9001824FB /* HomeViewController.swift */,
 				258F164B2029E777001824FB /* AuthViewController.swift */,
 				258F1655202A0CBD001824FB /* RegisterViewController.swift */,
+				2577F4582031EFE0001FED09 /* NewMessageTableViewController.swift */,
+				2577F46020320DE2001FED09 /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -165,6 +177,7 @@
 				258F16462029E462001824FB /* UIViewForCreatingNSLayoutContraints.swift */,
 				258F1657202A0E64001824FB /* UIViewControllerPresentExtension.swift */,
 				25531559202F5BFC004B0D3D /* OwnDateFormat.swift */,
+				2577F45E20320693001FED09 /* CacheImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -191,6 +204,7 @@
 			children = (
 				25E6860320308E1300C0EC4B /* NewMessageCollectionViewCell.swift */,
 				25E686052030B23800C0EC4B /* MessageTableViewCell.swift */,
+				2577F45C2031FD8E001FED09 /* UserTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -199,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				25E6860A2030DF3600C0EC4B /* Message.swift */,
+				2577F45A2031F349001FED09 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -443,11 +458,16 @@
 				25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */,
 				258F16252029D9B9001824FB /* HomeViewController.swift in Sources */,
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
+				2577F45F20320693001FED09 /* CacheImageView.swift in Sources */,
+				2577F45D2031FD8E001FED09 /* UserTableViewCell.swift in Sources */,
 				258F1658202A0E64001824FB /* UIViewControllerPresentExtension.swift in Sources */,
 				25E686062030B23800C0EC4B /* MessageTableViewCell.swift in Sources */,
 				2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */,
 				258F1656202A0CBD001824FB /* RegisterViewController.swift in Sources */,
+				2577F45B2031F349001FED09 /* User.swift in Sources */,
+				2577F4592031EFE0001FED09 /* NewMessageTableViewController.swift in Sources */,
 				258F16232029D9B9001824FB /* AppDelegate.swift in Sources */,
+				2577F46120320DE2001FED09 /* ChatViewController.swift in Sources */,
 				25E6860B2030DF3600C0EC4B /* Message.swift in Sources */,
 				258F164A2029E4F0001824FB /* DataService.swift in Sources */,
 				258F164F2029FBE4001824FB /* Constants.swift in Sources */,
