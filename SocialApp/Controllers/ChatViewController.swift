@@ -7,49 +7,123 @@
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "Cell"
 
 class ChatViewController: UICollectionViewController {
-
+    
+    var user: User? {
+        didSet {
+            navigationItem.title = user?.username
+        }
+    }
+    
+    private lazy var backView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        view.bindToKeyboard()
+        
+        let border = CALayer()
+        border.backgroundColor = UIColor.lightGray.cgColor
+        border.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
+        view.layer.addSublayer(border)
+        
+        return view
+    }()
+    
+    private let addButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "plus"), for: .normal)
+        button.contentMode = .scaleAspectFill
+        button.bindToKeyboard()
+        return button
+    }()
+    
+    private lazy var messageTextView: UITextView = {
+        let textView = UITextView()
+        textView.text = "Type a message..."
+        textView.font = AVENIR_MEDIUM
+        textView.delegate = self
+        textView.textContainerInset = UIEdgeInsets(top: 11, left: 8, bottom: 0, right: 8)
+        textView.textColor = UIColor.lightGray
+        textView.layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        textView.layer.borderColor = #colorLiteral(red: 0.7670402351, green: 0.7670402351, blue: 0.7670402351, alpha: 1)
+        textView.layer.borderWidth = 1
+        textView.layer.cornerRadius = 10
+        textView.layer.masksToBounds = true
+        textView.bindToKeyboard()
+        return textView
+    }()
+    
+    private let sendButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "sendButton"), for: .normal)
+        button.contentMode = .scaleAspectFit
+        button.bindToKeyboard()
+        button.addTarget(self, action: #selector(sendMessage(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
+        addViews()
+        setUpConstraints()
+        
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    fileprivate func addViews(){
+        navigationController?.navigationBar.topItem?.title = ""
+        collectionView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        view.addSubview(backView)
+        view.addSubview(addButton)
+        view.addSubview(messageTextView)
+        view.addSubview(sendButton)
     }
-    */
-
-    // MARK: UICollectionViewDataSource
+    
+    fileprivate func setUpConstraints(){
+        
+        backView.addConstraints([
+            equal(view, \.leadingAnchor),
+            equal(view, \.trailingAnchor),
+            equal(view, \.bottomAnchor),
+            equal(\.heightAnchor, to: 50)
+            ])
+        
+        addButton.addConstraints([
+            equal(backView,\.leadingAnchor,constant: 15),
+            equal(backView,\.centerYAnchor),
+            equal(\.heightAnchor, to: 20),
+            equal(\.widthAnchor, to: 20)
+            ])
+        
+        sendButton.addConstraints([
+            equal(messageTextView, \.centerYAnchor),
+            equal(backView, \.trailingAnchor,constant: -10),
+            equal(\.heightAnchor, to: 80),
+            equal(\.widthAnchor, to: 95)
+            ])
+        
+        messageTextView.addConstraints([
+            equal(addButton,\.leftAnchor, \.rightAnchor, constant: 15),
+            equal(backView,\.centerYAnchor),
+            equal(sendButton, \.rightAnchor,\.leftAnchor, constant: -5),
+            equal(\.heightAnchor, to: 40),
+            ])
+    }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 0
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return 0
     }
 
@@ -60,36 +134,39 @@ class ChatViewController: UICollectionViewController {
     
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    @objc fileprivate func sendMessage(_ sender: UIButton) {
+        let timestamp = Int(Date().timeIntervalSince1970)
+        
+        let messageData: [String : Any] = ["text": messageTextView.text, "fromID": Auth.auth().currentUser?.uid as Any, "toID": user?.userID as Any, "timestamp": timestamp]
+        
+        DataService.instance.sendMessege(withGroupKey: nil, messageData: messageData as Dictionary<String, AnyObject>) { (complete) in
+            if complete {
+                print("message sent")
+            } else {
+                let alert = UIAlertController(title: "Error", message: "The message can't be sent right now. Please try again later.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
+            }
+        }
+        
+        messageTextView.text = nil
+        messageTextView.endEditing(true)
     }
-    */
 
+}
+
+extension ChatViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.textColor = UIColor.black
+            textView.text = nil
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Type a message..."
+            textView.textColor = UIColor.lightGray
+        }
+    }
 }

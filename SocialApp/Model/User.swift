@@ -9,33 +9,39 @@
 import Foundation
 
 class User {
-    private var _username: String
-    private var _email: String
-    private var _profileImageURL: String
-    private var _gender: String
-    private var _birthday: String
+    private var _userID: String!
+    private var _username: String!
+    private var _email: String!
+    private var _profileImageURL: String!
+    private var _gender: String!
+    private var _birthday: String!
     
-    var username: String {
+    var userID: String! {
+        return _userID
+    }
+    
+    var username: String! {
         return _username
     }
     
-    var email: String {
+    var email: String! {
         return _email
     }
     
-    var profileImageURL: String {
+    var profileImageURL: String! {
         return _profileImageURL
     }
     
-    var gender: String {
+    var gender: String! {
         return _gender
     }
     
-    var birthday: String {
+    var birthday: String! {
         return _birthday
     }
     
-    init(username: String, email: String, profileImage: String, gender: String,birthday: String) {
+    init(userID: String, username: String, email: String, profileImage: String, gender: String,birthday: String) {
+        self._userID = userID
         self._username = username
         self._email = email
         self._profileImageURL = profileImage

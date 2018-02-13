@@ -25,7 +25,7 @@ class MessageTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = AVENIR_MEDIUM
         label.textColor = #colorLiteral(red: 0.7531887889, green: 0.6876951456, blue: 0.9077157378, alpha: 1)
-        label.text = "Name Surname"
+        label.text = "Username"
         return label
     }()
     
@@ -42,7 +42,7 @@ class MessageTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = AVENIR_MEDIUM
         label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        label.text = "Name Surname Name Surname Name SurnameName Surname"
+        label.text = "Text"
         return label
     }()
     
@@ -96,5 +96,22 @@ class MessageTableViewCell: UITableViewCell {
             equal(\.widthAnchor, to: 220)
             ])
     }
+    
+    func configureCell(_ message: Message){
+        
+        if let toID = message.toID {
+            DataService.instance.getUserData(toID: toID, handler: { (userData) in
+                self.senderTitle.text = userData["username"] as? String
+                if let url = userData["profileImageURL"] as? String {
+                    self.avatarPicture.loadImageUsingCache(urlString: url)
+                }
+            })
+            
+        }
+
+        timeAgoLabel.text = messageDataFormat(message.timestamp!)
+        messageText.text = message.text
+    }
+    
 
 }

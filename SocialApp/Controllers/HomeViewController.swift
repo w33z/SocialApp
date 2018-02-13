@@ -11,8 +11,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    var messages = [Message]()
     var users = [User]()
+    var messagesNotRepeated = [Message]()
     
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -100,7 +100,7 @@ class HomeViewController: UIViewController {
     private let newMessageButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "newMessage"), for: .normal)
-        button.contentMode = .scaleAspectFill
+        button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(newMessageButtonAction), for: .touchUpInside)
         return button
     }()
@@ -120,6 +120,30 @@ class HomeViewController: UIViewController {
         DataService.instance.fetchDBUsers { (users) in
             self.users = users
         }
+
+        
+//        messagesNotRepeated.sort { (mes1, mes2) -> Bool in
+//            return mes1.timestamp?.intValue < mes2.timestamp?.intValue
+//        }
+//
+//        messagesNotRepeated.sort { $0.timestamp?.intValue < $1.timestamp?.intValue }
+//        }
+    
+        DataService.instance.fetchMessages { (nil,messagesNotRepeated) in
+            self.messagesNotRepeated = messagesNotRepeated!
+            messagesNotRepeated?.sorted { (mes1, mes2) -> Bool in
+                
+                let m11 = Int(mes1.timestamp!)
+                let m22 = Int(mes2.timestamp!)
+                
+                guard let m1 = mes1.timestamp, let m2 = mes2.timestamp else { return false}
+                return m1.intValue > m2.intValue
+            }
+            DispatchQueue.main.async {
+                self.messagesTableView.reloadData()
+            }
+        }
+        
         
     }
 
@@ -214,6 +238,7 @@ class HomeViewController: UIViewController {
     
     func showTypingMessageVC(_ user: User){
         let chatVC = ChatViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatVC.user = user
         navigationController?.pushViewController(chatVC, animated: true)
     }
 }
@@ -241,11 +266,14 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
 
 extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return messagesNotRepeated.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TABLEVIEW_MESSAGE_CELL, for: indexPath) as!MessageTableViewCell
+        
+        let message = messagesNotRepeated[indexPath.row]
+        cell.configureCell(message)
         
         return cell
     }

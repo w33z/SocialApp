@@ -14,6 +14,8 @@
 		2577F45D2031FD8E001FED09 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45C2031FD8E001FED09 /* UserTableViewCell.swift */; };
 		2577F45F20320693001FED09 /* CacheImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45E20320693001FED09 /* CacheImageView.swift */; };
 		2577F46120320DE2001FED09 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46020320DE2001FED09 /* ChatViewController.swift */; };
+		2577F46320333A5B001FED09 /* BindViewToKeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */; };
+		2577F46520333F20001FED09 /* BorderToOnlyOneEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46420333F20001FED09 /* BorderToOnlyOneEdge.swift */; };
 		258F16232029D9B9001824FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16222029D9B9001824FB /* AppDelegate.swift */; };
 		258F16252029D9B9001824FB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16242029D9B9001824FB /* HomeViewController.swift */; };
 		258F16282029D9B9001824FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258F16262029D9B9001824FB /* Main.storyboard */; };
@@ -52,6 +54,8 @@
 		2577F45C2031FD8E001FED09 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		2577F45E20320693001FED09 /* CacheImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImageView.swift; sourceTree = "<group>"; };
 		2577F46020320DE2001FED09 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindViewToKeyboardExtension.swift; sourceTree = "<group>"; };
+		2577F46420333F20001FED09 /* BorderToOnlyOneEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderToOnlyOneEdge.swift; sourceTree = "<group>"; };
 		258F161F2029D9B9001824FB /* SocialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		258F16222029D9B9001824FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		258F16242029D9B9001824FB /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +182,8 @@
 				258F1657202A0E64001824FB /* UIViewControllerPresentExtension.swift */,
 				25531559202F5BFC004B0D3D /* OwnDateFormat.swift */,
 				2577F45E20320693001FED09 /* CacheImageView.swift */,
+				2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */,
+				2577F46420333F20001FED09 /* BorderToOnlyOneEdge.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -456,6 +462,7 @@
 			files = (
 				258F16472029E462001824FB /* UIViewForCreatingNSLayoutContraints.swift in Sources */,
 				25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */,
+				2577F46520333F20001FED09 /* BorderToOnlyOneEdge.swift in Sources */,
 				258F16252029D9B9001824FB /* HomeViewController.swift in Sources */,
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
 				2577F45F20320693001FED09 /* CacheImageView.swift in Sources */,
@@ -471,6 +478,7 @@
 				25E6860B2030DF3600C0EC4B /* Message.swift in Sources */,
 				258F164A2029E4F0001824FB /* DataService.swift in Sources */,
 				258F164F2029FBE4001824FB /* Constants.swift in Sources */,
+				2577F46320333A5B001FED09 /* BindViewToKeyboardExtension.swift in Sources */,
 				258F1654202A0C6D001824FB /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

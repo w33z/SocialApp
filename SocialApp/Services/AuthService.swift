@@ -35,7 +35,7 @@ class AuthService {
                     if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
                         
                         let userData = ["provider": user.providerID, "email": user.email, "username": username,"gender": gender,"birthday": birthday,"profileImageURL":profileImageUrl]
-                        DataService.instance.createDBUser(uid: user.uid, userData: userData)
+                        DataService.instance.createDBUser(uid: user.uid, userData: userData as Dictionary<String, AnyObject>)
                         userCreationComplete(true,nil)
                     }
                 })

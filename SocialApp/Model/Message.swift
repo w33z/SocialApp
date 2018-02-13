@@ -9,25 +9,37 @@
 import Foundation
 
 class  Message {
-    private var _content: String
-    private var _senderId: String
-    private var _timeDelivery: String
+    private var _text: String?
+    private var _fromID: String?
+    private var _toID: String?
+    private var _timestamp: NSNumber?
+    private var _isReaded: Bool?
     
-    var content: String {
-        return _content
+    var text: String? {
+        return _text
     }
     
-    var senderId: String {
-        return _senderId
+    var fromID: String? {
+        return _fromID
     }
     
-    var timeDelivery: String {
-        return _timeDelivery
+    var toID: String? {
+        return _toID
     }
     
-    init(content: String, senderId: String,timeDelivery: String) {
-        self._content = content
-        self._senderId = senderId
-        self._timeDelivery = timeDelivery
+    var timestamp: NSNumber? {
+        return _timestamp
+    }
+    
+    var isReaded: Bool? {
+        return _isReaded
+    }
+    
+    init(text: String?, fromID: String?, toID: String?, timestamp: NSNumber?, isReaded: Bool?) {
+        self._text = text
+        self._fromID = fromID
+        self._toID = toID
+        self._timestamp = timestamp
+        self._isReaded = isReaded
     }
 }
