@@ -8,39 +8,39 @@
 
 import Foundation
 
-class User {
-    private var _userID: String!
-    private var _username: String!
-    private var _email: String!
-    private var _profileImageURL: String!
-    private var _gender: String!
-    private var _birthday: String!
+class User: NSObject {
+    private var _userID: String?
+    private var _username: String?
+    private var _email: String?
+    private var _profileImageURL: String?
+    private var _gender: String?
+    private var _birthday: String?
     
-    var userID: String! {
+    var userID: String? {
         return _userID
     }
     
-    var username: String! {
+    var username: String? {
         return _username
     }
     
-    var email: String! {
+    var email: String? {
         return _email
     }
     
-    var profileImageURL: String! {
+    var profileImageURL: String? {
         return _profileImageURL
     }
     
-    var gender: String! {
+    var gender: String? {
         return _gender
     }
     
-    var birthday: String! {
+    var birthday: String? {
         return _birthday
     }
     
-    init(userID: String, username: String, email: String, profileImage: String, gender: String,birthday: String) {
+    init(userID: String?, username: String?, email: String?, profileImage: String?, gender: String?,birthday: String?) {
         self._userID = userID
         self._username = username
         self._email = email
@@ -48,5 +48,4 @@ class User {
         self._gender = gender
         self._birthday = birthday
     }
-    
 }

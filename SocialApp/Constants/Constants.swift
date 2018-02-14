@@ -12,6 +12,7 @@ import UIKit
 let AVENIR_MEDIUM = UIFont(name: "Avenir-Medium", size: 14)!
 
 // cells Reuse Identifiers
-let COLLECTIONVIEW_NEW_MESSEAGES = "newMessageCell"
-let TABLEVIEW_MESSAGE_CELL = "messageCell"
-let TABLEVIEW_USER_CELL = "userCell"
+let NEW_MESSEAGES_COLLECTIONVIEW = "newMessageCell"
+let ALL_CHAT_MESSAGES_CELL_TABLEVIEW = "allChatMessagesCell"
+let CHOOSEUSER_CELL_TABLEVIEW = "userChooseCell"
+let CHAT_COLLECTIONVIEW_CELL = "chatCell"

@@ -1,5 +1,5 @@
 //
-//  NewMessageTableViewController.swift
+//  ChooseUserTableViewController.swift
 //  SocialApp
 //
 //  Created by Bartosz Pawełczyk on 12.02.2018.
@@ -8,9 +8,10 @@
 
 import UIKit
 
-class NewMessageTableViewController: UITableViewController {
+class ChooseUserTableViewController: UITableViewController {
 
     var users = [User]()
+    var homeVC: HomeViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +27,7 @@ class NewMessageTableViewController: UITableViewController {
             }
         }
         
-        tableView.register(UserTableViewCell.self, forCellReuseIdentifier: TABLEVIEW_USER_CELL)
-        
+        tableView.register(ChooseUserTableViewCell.self, forCellReuseIdentifier: CHOOSEUSER_CELL_TABLEVIEW)
     }
     
     @objc fileprivate func dismissView(){
@@ -56,7 +56,7 @@ class NewMessageTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TABLEVIEW_USER_CELL, for: indexPath) as! UserTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CHOOSEUSER_CELL_TABLEVIEW, for: indexPath) as! ChooseUserTableViewCell
         
         let user = users[indexPath.row]
         cell.configureCell(user)
@@ -67,8 +67,6 @@ class NewMessageTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(70)
     }
-    
-    var homeVC: HomeViewController?
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {

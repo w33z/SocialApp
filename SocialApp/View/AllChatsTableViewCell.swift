@@ -1,5 +1,5 @@
 //
-//  MessageTableViewCell.swift
+//  AllChatsTableViewCell.swift
 //  SocialApp
 //
 //  Created by Bartosz Pawełczyk on 11.02.2018.
@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Firebase
 
-class MessageTableViewCell: UITableViewCell {
+class AllChatsTableViewCell: UITableViewCell {
     
     private let avatarPicture: UIImageView = {
         let imageView = UIImageView()
@@ -99,8 +100,8 @@ class MessageTableViewCell: UITableViewCell {
     
     func configureCell(_ message: Message){
         
-        if let toID = message.toID {
-            DataService.instance.getUserData(toID: toID, handler: { (userData) in
+        if let id = message.getChatPartnerID() {
+            DataService.instance.getUserData(toID: id, handler: { (userData) in
                 self.senderTitle.text = userData["username"] as? String
                 if let url = userData["profileImageURL"] as? String {
                     self.avatarPicture.loadImageUsingCache(urlString: url)

@@ -12,6 +12,30 @@ import Firebase
 let DB_BASE = Database.database().reference()
 let STORAGE_REF = Storage.storage().reference()
 
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
+}
+
 class DataService {
     static let instance = DataService()
     
@@ -20,6 +44,7 @@ class DataService {
     private var _REF_USERS = DB_BASE.child("users")
     private var _REF_GROUPS = DB_BASE.child("groups")
     private var _REF_MESSAGES = DB_BASE.child("messages")
+    private var _REF_USER_MESSAGES = DB_BASE.child("user-messages")
     
     var REF_BASE: DatabaseReference {
         return _REF_BASE
@@ -39,6 +64,10 @@ class DataService {
     
     var REF_MESSAGES: DatabaseReference {
         return _REF_MESSAGES
+    }
+    
+    var REF_USER_MESSAGES: DatabaseReference {
+        return _REF_USER_MESSAGES
     }
     
     func createDBUser(uid: String,userData: Dictionary<String,AnyObject>) {
@@ -68,7 +97,6 @@ class DataService {
             }
             
             handler(userArray)
-
         }, withCancel: nil)
     }
     
@@ -83,44 +111,121 @@ class DataService {
         }, withCancel: nil)
     }
     
+    func getUser(toID: String, handler: @escaping (_ user: User) -> ()){
+        REF_USERS.child(toID).observeSingleEvent(of: .value, with: { (snapshot) in
+
+                let userID = snapshot.key
+                let username = snapshot.childSnapshot(forPath: "username").value as! String
+                let email = snapshot.childSnapshot(forPath: "email").value as! String
+                let avatar = snapshot.childSnapshot(forPath: "profileImageURL").value as! String
+                let gender = snapshot.childSnapshot(forPath: "gender").value as! String
+                let birthday = snapshot.childSnapshot(forPath: "birthday").value as! String
+                
+                let user = User(userID: userID, username: username, email: email, profileImage: avatar, gender: gender, birthday: birthday)
+
+                handler(user)
+        }, withCancel: nil)
+    }
+    
     func sendMessege(withGroupKey groupKey: String?,messageData: Dictionary<String,AnyObject>, complete: @escaping (_ status: Bool) -> ()) {
     
         if groupKey != nil {
             REF_GROUPS.child(groupKey!).child("messages").childByAutoId().updateChildValues(messageData)
             complete(true)
         } else {
-            REF_MESSAGES.childByAutoId().updateChildValues(messageData)
+            let childByAuto = REF_MESSAGES.childByAutoId()
+            childByAuto.updateChildValues(messageData, withCompletionBlock: { (error, ref) in
+                if error != nil{
+                    debugPrint(error?.localizedDescription)
+                    return
+                }
+                
+                let fromID = messageData["fromID"] as! String
+                let toID = messageData["toID"] as! String
+                let messageID = childByAuto.key
+                self.REF_USER_MESSAGES.child(fromID).updateChildValues([messageID: 1])
+                self.REF_USER_MESSAGES.child(toID).updateChildValues([messageID: 1])
+            })
             complete(false)
         }
     }
     
-    func fetchMessages(handler: @escaping (_ messages: [Message]?,_ messagesDictionary: [Message]?) -> ()){
-        REF_MESSAGES.observe(.value, with: { (snapshot) in
-            
-            var messagesArray = [Message]()
-            var messagesDictionary = Dictionary<String,Message>()
-            var messagesNotRepeated = [Message]()
-            
-            guard let messageSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            for message in messageSnapshot {
-                let text = message.childSnapshot(forPath: "text").value as! String
-                let fromID = message.childSnapshot(forPath: "fromID").value as! String
-                let toID = message.childSnapshot(forPath: "toID").value as! String
-                let timestamp = message.childSnapshot(forPath: "timestamp").value as! NSNumber
+    func fetchMessages(_ userID: String,handler: @escaping (_ messages: [Message]) -> ()){
+//        REF_MESSAGES.observe(.value, with: { (snapshot) in
+//
+//            var messagesArray = [Message]()
+//
+//            guard let messageSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//            for message in messageSnapshot {
+//                let text = message.childSnapshot(forPath: "text").value as! String
+//                let fromID = message.childSnapshot(forPath: "fromID").value as! String
+//                let toID = message.childSnapshot(forPath: "toID").value as! String
+//                let timestamp = message.childSnapshot(forPath: "timestamp").value as! NSNumber
+//
+//                let messageTemp = Message(text: text, fromID: fromID, toID: toID, timestamp: timestamp, isReaded: nil)
+//
+//                messagesArray.append(messageTemp)
+//            }
+//
+//            handler(messagesArray)
+//        }, withCancel: nil)
+        
+        var messagesArray = [Message]()
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        REF_USER_MESSAGES.child(uid).observe(.childAdded, with: { (snapshot) in
 
-                let messageTemp = Message(text: text, fromID: fromID, toID: toID, timestamp: timestamp, isReaded: nil)
-                
-                if let toID = messageTemp.toID {
-                    messagesDictionary[toID] = messageTemp
-                    messagesNotRepeated = Array(messagesDictionary.values)  
+            let messageID = snapshot.key
+            self.REF_MESSAGES.child(messageID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    
+                    let text = dictionary["text"] as! String
+                    let fromID = dictionary["fromID"] as! String
+                    let toID = dictionary["toID"] as! String
+                    let timestamp = dictionary["timestamp"] as! NSNumber
+                    let messageTemp = Message(text: text, fromID: fromID, toID: toID, timestamp: timestamp, isReaded: nil)
+                    
+                    if messageTemp.getChatPartnerID() == userID {
+                        messagesArray.append(messageTemp)
+                    }
                 }
-                
-                messagesArray.append(messageTemp)
-            }
-            
-            handler(messagesArray,messagesNotRepeated)
-            
+                handler(messagesArray)
+            }, withCancel: nil)
+        }, withCancel: nil)
+    }
+    
+    func fetchUserMessages(handler: @escaping (_ messages: [Message]) -> ()){
+        
+        var messagesArray = [Message]()
+        var messagesDictionary = Dictionary<String,Message>()
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        REF_USER_MESSAGES.child(uid).observe(.childAdded, with: { (snapshot) in
+
+            let messageID = snapshot.key
+
+            self.REF_MESSAGES.child(messageID).observeSingleEvent(of: .value, with: { (snapshot) in
+
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+
+                    let text = dictionary["text"] as! String
+                    let fromID = dictionary["fromID"] as! String
+                    let toID = dictionary["toID"] as! String
+                    let timestamp = dictionary["timestamp"] as! NSNumber
+                    let messageTemp = Message(text: text, fromID: fromID, toID: toID, timestamp: timestamp, isReaded: nil)
+
+                    if let chatPartnerID = messageTemp.getChatPartnerID() {
+                        messagesDictionary.updateValue(messageTemp, forKey: chatPartnerID)
+                        messagesArray = Array(messagesDictionary.values)
+                    }
+                    
+                }
+                handler(messagesArray)
+            })            
         }, withCancel: nil)
     }
 }

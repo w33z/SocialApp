@@ -9,15 +9,22 @@
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "Cell"
-
-class ChatViewController: UICollectionViewController {
+class ChatViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var user: User? {
         didSet {
             navigationItem.title = user?.username
         }
     }
+    
+    var messages = [Message]()
+    
+    private let bgImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = #imageLiteral(resourceName: "Bg")
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     
     private lazy var backView: UIView = {
         let view = UIView()
@@ -71,7 +78,17 @@ class ChatViewController: UICollectionViewController {
         addViews()
         setUpConstraints()
         
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(ChatCollectionViewCell.self, forCellWithReuseIdentifier: CHAT_COLLECTIONVIEW_CELL)
+        
+        if let userID = user?.userID {
+            DataService.instance.fetchMessages(userID) { (messages) in
+                self.messages = messages
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,7 +97,10 @@ class ChatViewController: UICollectionViewController {
     
     fileprivate func addViews(){
         navigationController?.navigationBar.topItem?.title = ""
-        collectionView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        collectionView?.backgroundView = bgImage
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 60, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
         view.addSubview(backView)
         view.addSubview(addButton)
@@ -120,19 +140,38 @@ class ChatViewController: UICollectionViewController {
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 0
+        return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return messages.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CHAT_COLLECTIONVIEW_CELL, for: indexPath) as! ChatCollectionViewCell
+        
+        let message = messages[indexPath.item]
+        if let userProfileImageURL = user?.profileImageURL {
+            cell.messageBGWidthAnchor?.constant = estimateFrameForTest(text: message.text!).width + 64
+            cell.configureCell(message, userProfileImageURL)
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        
+        if let text = messages[indexPath.item].text {
+            height = estimateFrameForTest(text: text).height + 20
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    fileprivate func estimateFrameForTest(text: String) -> CGRect {
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: AVENIR_MEDIUM], context: nil)
     }
     
     @objc fileprivate func sendMessage(_ sender: UIButton) {
