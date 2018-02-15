@@ -122,23 +122,12 @@ class HomeViewController: UIViewController {
             self.users = users
         }
         DataService.instance.fetchUserMessages { (messages) in
-            self.messages = messages
+            self.messages = messages.reversed()
                         
             DispatchQueue.main.async {
                 self.messagesTableView.reloadData()
             }
         }
-        
-//        messagesNotRepeated.sort { (mes1, mes2) -> Bool in
-//            return mes1.timestamp?.intValue < mes2.timestamp?.intValue
-//        }
-//
-//        messagesNotRepeated.sort { $0.timestamp?.intValue < $1.timestamp?.intValue }
-//        }
-        
-//        messages.sorted(by: { $0.timestamp!.intValue > $1.timestamp!.intValue })
-        
-        
     }
 
     fileprivate func setUpConstrains() {

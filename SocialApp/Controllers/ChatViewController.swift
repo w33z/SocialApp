@@ -81,7 +81,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         self.collectionView!.register(ChatCollectionViewCell.self, forCellWithReuseIdentifier: CHAT_COLLECTIONVIEW_CELL)
         
         if let userID = user?.userID {
-            DataService.instance.fetchMessages(userID) { (messages) in
+            DataService.instance.fetchMessages(userID: userID) { (messages) in
                 self.messages = messages
                 
                 DispatchQueue.main.async {
@@ -89,6 +89,8 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
                 }
             }
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -151,10 +153,37 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CHAT_COLLECTIONVIEW_CELL, for: indexPath) as! ChatCollectionViewCell
         
         let message = messages[indexPath.item]
-        if let userProfileImageURL = user?.profileImageURL {
-            cell.messageBGWidthAnchor?.constant = estimateFrameForTest(text: message.text!).width + 64
-            cell.configureCell(message, userProfileImageURL)
+        
+        cell.messageBGWidthAnchor?.constant = estimateFrameForTest(text: message.text!).width + 64
+        
+        if message.fromID == Auth.auth().currentUser?.uid {
+            DataService.instance.getUser(toID: message.fromID!, handler: { (user) in
+                cell.configureCell(message, user.profileImageURL!)
+            })
+
+            cell.avatarImageLeadingAnchor?.isActive = false
+            cell.messageBGLeftRightAnchor?.isActive = false
+            cell.messageTextViewRightAnchor?.isActive = false
+            cell.messageTextViewLeftAnchorConstant?.isActive = false
+            cell.avatarImageTrailingAnchor?.isActive = true
+            cell.messageBGRightLeftAnchor?.isActive = true
+            cell.messageTextViewLeftAnchor?.isActive = true
+            cell.messageTextViewRightAnchorConstant?.isActive = true
+
+        } else {
+            if let userProfileImageURL = user?.profileImageURL {
+                cell.configureCell(message, userProfileImageURL)
+            }
+            cell.avatarImageTrailingAnchor?.isActive = false
+            cell.messageBGRightLeftAnchor?.isActive = false
+            cell.messageTextViewLeftAnchor?.isActive = false
+            cell.messageTextViewRightAnchorConstant?.isActive = false
+            cell.avatarImageLeadingAnchor?.isActive = true
+            cell.messageBGLeftRightAnchor?.isActive = true
+            cell.messageTextViewRightAnchor?.isActive = true
+            cell.messageTextViewLeftAnchorConstant?.isActive = true
         }
+ 
         return cell
     }
     
@@ -190,6 +219,13 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         messageTextView.text = nil
         messageTextView.endEditing(true)
+    }
+    
+    @objc fileprivate func handleKeyboardDidShow(_ notification: Notification) {
+        if messages.count > 0 {
+            let indexPath = IndexPath(row: messages.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
     }
 
 }

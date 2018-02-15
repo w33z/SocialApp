@@ -57,12 +57,24 @@ class ChatCollectionViewCell: UICollectionViewCell {
         messageBG.addSubview(avatarImage)
     }
     
+    var avatarImageLeadingAnchor: NSLayoutConstraint?
+    var avatarImageTrailingAnchor: NSLayoutConstraint?
     var messageBGWidthAnchor: NSLayoutConstraint?
+    var messageBGLeftRightAnchor: NSLayoutConstraint?
+    var messageBGRightLeftAnchor: NSLayoutConstraint?
+    var messageTextViewLeftAnchor: NSLayoutConstraint?
+    var messageTextViewRightAnchor: NSLayoutConstraint?
+    var messageTextViewLeftAnchorConstant: NSLayoutConstraint?
+    var messageTextViewRightAnchorConstant: NSLayoutConstraint?
     
     fileprivate func addConstraints(){
         
+        avatarImageTrailingAnchor = avatarImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25)
+        avatarImageLeadingAnchor = avatarImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25)
+    
         avatarImage.addConstraints([
-            equal(contentView, \.trailingAnchor, constant: -25),
+//            equal(contentView, \.trailingAnchor, constant: -25),
+//            equal(contentView, \.leadingAnchor, constant: 25),
             equal(contentView, \.topAnchor),
             equal(\.heightAnchor, to: 40),
             equal(\.widthAnchor, to: 40)
@@ -71,20 +83,31 @@ class ChatCollectionViewCell: UICollectionViewCell {
         messageBGWidthAnchor = messageBG.widthAnchor.constraint(equalToConstant: 300)
         messageBGWidthAnchor?.isActive = true
         
+        messageBGRightLeftAnchor = messageBG.rightAnchor.constraint(equalTo: avatarImage.leftAnchor, constant: 18)
+        messageBGLeftRightAnchor = messageBG.leftAnchor.constraint(equalTo: avatarImage.rightAnchor, constant: -18)
+        
         messageBG.addConstraints([
 //            equal(contentView, \.leadingAnchor, constant: 25),
-            equal(avatarImage, \.rightAnchor, \.leftAnchor, constant: 18),
+//            equal(avatarImage, \.rightAnchor, \.leftAnchor, constant: 18),
+//            equal(avatarImage, \.leftAnchor, \.rightAnchor, constant: -18),
             equal(contentView, \.topAnchor),
             equal(contentView, \.bottomAnchor)
             ])
         
+        messageTextViewLeftAnchor = messageTextView.leftAnchor.constraint(equalTo: messageBG.leftAnchor)
+        messageTextViewRightAnchor = messageTextView.rightAnchor.constraint(equalTo: messageBG.rightAnchor)
+        messageTextViewLeftAnchorConstant = messageTextView.leftAnchor.constraint(equalTo: messageBG.leftAnchor, constant: 35)
+        messageTextViewRightAnchorConstant = messageTextView.rightAnchor.constraint(equalTo: messageBG.rightAnchor, constant: -35)
+        
         messageTextView.addConstraints([
-            equal(messageBG,\.leftAnchor),
+//            equal(messageBG,\.leftAnchor, constant: 35),
+//            equal(messageBG,\.leftAnchor),
             equal(messageBG,\.topAnchor),
             equal(messageBG,\.bottomAnchor),
-            equal(messageBG, \.rightAnchor, constant: -35)
+//            equal(messageBG, \.rightAnchor, constant: -35)
+//            equal(messageBG, \.rightAnchor)
             ])
-    }
+    } 
     
     func configureCell(_ message: Message,_ userProfileImageURL: String){
         avatarImage.loadImageUsingCache(urlString: userProfileImageURL)
