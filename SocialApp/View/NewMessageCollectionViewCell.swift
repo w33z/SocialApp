@@ -109,7 +109,6 @@ class NewMessageCollectionViewCell: UICollectionViewCell {
             equal(\.heightAnchor, to: 20),
             equal(\.widthAnchor, to: 150)
             ])
-        
     }
     
     fileprivate func configureCornerRadius() {
@@ -120,7 +119,18 @@ class NewMessageCollectionViewCell: UICollectionViewCell {
         layer.masksToBounds = true
     }
     
-    func configureCell(){
+    func configureCell(_ message: Message){
         
+        if let id = message.getChatPartnerID() {
+            DataService.instance.getUserData(toID: id, handler: { (userData) in
+                self.senderLabel.text = userData["username"] as? String
+                if let url = userData["profileImageURL"] as? String {
+                    self.avatarPicture.loadImageUsingCache(urlString: url)
+                }
+            })
+        }
+        
+        timeDeliveryLabel.text = messageDataFormat(message.timestamp!)
+        headerLabel.text = message.text
     }
 }

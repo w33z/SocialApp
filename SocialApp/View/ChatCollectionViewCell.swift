@@ -10,7 +10,7 @@ import UIKit
 
 class ChatCollectionViewCell: UICollectionViewCell {
     
-    lazy var messageBG: UIView = {
+    private let messageBG: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         view.layer.shadowColor = UIColor.black.cgColor
@@ -39,6 +39,15 @@ class ChatCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    let messageStatus: UILabel = {
+        let label = UILabel()
+        label.font = AVENIR_MEDIUM.withSize(10)
+        label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -55,6 +64,7 @@ class ChatCollectionViewCell: UICollectionViewCell {
         addSubview(messageBG)
         messageBG.addSubview(messageTextView)
         messageBG.addSubview(avatarImage)
+        addSubview(messageStatus)
     }
     
     var avatarImageLeadingAnchor: NSLayoutConstraint?
@@ -107,10 +117,24 @@ class ChatCollectionViewCell: UICollectionViewCell {
 //            equal(messageBG, \.rightAnchor, constant: -35)
 //            equal(messageBG, \.rightAnchor)
             ])
+        
+        messageStatus.addConstraints([
+            equal(messageBG, \.leadingAnchor),
+            equal(messageBG, \.trailingAnchor),
+            equal(messageBG, \.topAnchor, \.bottomAnchor, constant: 4),
+            ])
     } 
     
     func configureCell(_ message: Message,_ userProfileImageURL: String){
         avatarImage.loadImageUsingCache(urlString: userProfileImageURL)
         messageTextView.text = message.text
+        
+        guard let status = message.status else { return }
+        
+        if status {
+            messageStatus.text = "Odczytano"
+        } else {
+            messageStatus.text = "Wysłano"
+        }
     }
 }

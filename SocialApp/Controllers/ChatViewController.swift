@@ -26,6 +26,13 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         return imageView
     }()
     
+    private lazy var backViewForSafeArea: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        view.bindToKeyboard()
+        return view
+    }()
+    
     private lazy var backView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -72,6 +79,8 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         return button
     }()
     
+    var timer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -84,13 +93,19 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
             DataService.instance.fetchMessages(userID: userID) { (messages) in
                 self.messages = messages
                 
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
+                //To reduce profile image bugs
+                self.timer?.invalidate()
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleTimer), userInfo: nil, repeats: false)
             }
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        viewScrollButton()
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,9 +116,10 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         navigationController?.navigationBar.topItem?.title = ""
         collectionView?.backgroundView = bgImage
         collectionView?.alwaysBounceVertical = true
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 60, right: 0)
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 80, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
+        view.addSubview(backViewForSafeArea)
         view.addSubview(backView)
         view.addSubview(addButton)
         view.addSubview(messageTextView)
@@ -112,10 +128,17 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     fileprivate func setUpConstraints(){
         
-        backView.addConstraints([
+        backViewForSafeArea.addConstraints([
             equal(view, \.leadingAnchor),
             equal(view, \.trailingAnchor),
             equal(view, \.bottomAnchor),
+            equal(\.heightAnchor, to: 50)
+            ])
+        
+        backView.addConstraints([
+            equal(view, \.leadingAnchor),
+            equal(view, \.trailingAnchor),
+            equal(view, \.safeAreaLayoutGuide.bottomAnchor),
             equal(\.heightAnchor, to: 50)
             ])
         
@@ -153,7 +176,6 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CHAT_COLLECTIONVIEW_CELL, for: indexPath) as! ChatCollectionViewCell
         
         let message = messages[indexPath.item]
-        
         cell.messageBGWidthAnchor?.constant = estimateFrameForTest(text: message.text!).width + 64
         
         if message.fromID == Auth.auth().currentUser?.uid {
@@ -169,6 +191,10 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
             cell.messageBGRightLeftAnchor?.isActive = true
             cell.messageTextViewLeftAnchor?.isActive = true
             cell.messageTextViewRightAnchorConstant?.isActive = true
+            
+            if indexPath.item == messages.count - 1 {
+                cell.messageStatus.isHidden = false
+            }
 
         } else {
             if let userProfileImageURL = user?.profileImageURL {
@@ -182,11 +208,12 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
             cell.messageBGLeftRightAnchor?.isActive = true
             cell.messageTextViewRightAnchor?.isActive = true
             cell.messageTextViewLeftAnchorConstant?.isActive = true
+            cell.messageStatus.isHidden = true
         }
- 
+
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
         
@@ -197,10 +224,21 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         return CGSize(width: view.frame.width, height: height)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
+    
     fileprivate func estimateFrameForTest(text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: AVENIR_MEDIUM], context: nil)
+    }
+    
+    fileprivate func viewScrollButton() {
+        if messages.count > 0 {
+            let indexPath = IndexPath(row: messages.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        }
     }
     
     @objc fileprivate func sendMessage(_ sender: UIButton) {
@@ -216,18 +254,20 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
                 alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
             }
         }
-        
+
         messageTextView.text = nil
         messageTextView.endEditing(true)
     }
     
     @objc fileprivate func handleKeyboardDidShow(_ notification: Notification) {
-        if messages.count > 0 {
-            let indexPath = IndexPath(row: messages.count - 1, section: 0)
-            collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        viewScrollButton()
+    }
+    
+    @objc fileprivate func handleTimer(){
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
         }
     }
-
 }
 
 extension ChatViewController: UITextViewDelegate {

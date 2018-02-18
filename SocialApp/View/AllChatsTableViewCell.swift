@@ -107,12 +107,18 @@ class AllChatsTableViewCell: UITableViewCell {
                     self.avatarPicture.loadImageUsingCache(urlString: url)
                 }
             })
-            
         }
 
         timeAgoLabel.text = messageDataFormat(message.timestamp!)
+        
+        guard let status = message.status else { return }
+        
+        if status {
+            messageText.font = AVENIR_MEDIUM
+        } else {
+            messageText.font = AVENIR_BLACK
+        }
+        
         messageText.text = message.text
     }
-    
-
 }

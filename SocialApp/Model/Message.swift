@@ -14,7 +14,7 @@ class  Message {
     private var _fromID: String?
     private var _toID: String?
     private var _timestamp: NSNumber?
-    private var _isReaded: Bool?
+    private var _status: Bool?
     
     var text: String? {
         return _text
@@ -32,16 +32,16 @@ class  Message {
         return _timestamp
     }
     
-    var isReaded: Bool? {
-        return _isReaded
+    var status: Bool? {
+        return _status
     }
     
-    init(text: String?, fromID: String?, toID: String?, timestamp: NSNumber?, isReaded: Bool?) {
+    init(text: String?, fromID: String?, toID: String?, timestamp: NSNumber?, status: Bool?) {
         self._text = text
         self._fromID = fromID
         self._toID = toID
         self._timestamp = timestamp
-        self._isReaded = isReaded
+        self._status = status
     }
     
     func getChatPartnerID() -> String?{

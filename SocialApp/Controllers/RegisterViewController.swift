@@ -255,10 +255,10 @@ class RegisterViewController: UIViewController {
             ])
         
         registerForm.addConstraints([
-            equal(view, \.topAnchor,\.topAnchor, constant: 100),
+            equal(view, \.topAnchor,\.safeAreaLayoutGuide.topAnchor, constant: 100),
             equal(view, \.leadingAnchor, constant: 25),
             equal(view, \.trailingAnchor, constant: -25),
-            equal(view, \.bottomAnchor,\.bottomAnchor, constant: -88),
+            equal(view, \.bottomAnchor,\.safeAreaLayoutGuide.bottomAnchor, constant: -88),
             ])
         
         progressControl.addConstraints([
