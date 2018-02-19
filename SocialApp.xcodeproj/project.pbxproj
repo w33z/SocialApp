@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		15201D0B821D4E160F67D5A5 /* Pods_SocialApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB67AE87370B579F7C12F92 /* Pods_SocialApp.framework */; };
 		2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25531559202F5BFC004B0D3D /* OwnDateFormat.swift */; };
+		257203772039E58600B2B6EA /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257203762039E58600B2B6EA /* MessageService.swift */; };
+		257203792039E67300B2B6EA /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257203782039E67300B2B6EA /* UserService.swift */; };
+		2572037B203AEDB700B2B6EA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2572037A203AEDB700B2B6EA /* MenuViewController.swift */; };
+		2572037D203B246700B2B6EA /* ChangeButtonBackgroundForState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */; };
 		2577F4592031EFE0001FED09 /* ChooseUserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */; };
 		2577F45B2031F349001FED09 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45A2031F349001FED09 /* User.swift */; };
 		2577F45D2031FD8E001FED09 /* ChooseUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45C2031FD8E001FED09 /* ChooseUserTableViewCell.swift */; };
@@ -49,6 +53,10 @@
 /* Begin PBXFileReference section */
 		0116B7186547E057B5A3B253 /* Pods-SocialApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialApp/Pods-SocialApp.debug.xcconfig"; sourceTree = "<group>"; };
 		25531559202F5BFC004B0D3D /* OwnDateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnDateFormat.swift; sourceTree = "<group>"; };
+		257203762039E58600B2B6EA /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
+		257203782039E67300B2B6EA /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		2572037A203AEDB700B2B6EA /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeButtonBackgroundForState.swift; sourceTree = "<group>"; };
 		2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUserTableViewController.swift; sourceTree = "<group>"; };
 		2577F45A2031F349001FED09 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2577F45C2031FD8E001FED09 /* ChooseUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUserTableViewCell.swift; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 				258F1655202A0CBD001824FB /* RegisterViewController.swift */,
 				2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */,
 				2577F46020320DE2001FED09 /* ChatViewController.swift */,
+				2572037A203AEDB700B2B6EA /* MenuViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -183,6 +192,7 @@
 				25531559202F5BFC004B0D3D /* OwnDateFormat.swift */,
 				2577F45E20320693001FED09 /* CacheImageView.swift */,
 				2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */,
+				2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -192,6 +202,8 @@
 			children = (
 				258F16492029E4F0001824FB /* DataService.swift */,
 				258F1653202A0C6D001824FB /* AuthService.swift */,
+				257203762039E58600B2B6EA /* MessageService.swift */,
+				257203782039E67300B2B6EA /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -420,6 +432,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SlideMenuControllerSwift/SlideMenuControllerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -430,6 +443,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SlideMenuControllerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -466,7 +480,9 @@
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
 				2577F45F20320693001FED09 /* CacheImageView.swift in Sources */,
 				2577F45D2031FD8E001FED09 /* ChooseUserTableViewCell.swift in Sources */,
+				257203792039E67300B2B6EA /* UserService.swift in Sources */,
 				258F1658202A0E64001824FB /* UIViewControllerPresentExtension.swift in Sources */,
+				257203772039E58600B2B6EA /* MessageService.swift in Sources */,
 				25E686062030B23800C0EC4B /* AllChatsTableViewCell.swift in Sources */,
 				2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */,
 				258F1656202A0CBD001824FB /* RegisterViewController.swift in Sources */,
@@ -475,11 +491,13 @@
 				258F16232029D9B9001824FB /* AppDelegate.swift in Sources */,
 				2577F46120320DE2001FED09 /* ChatViewController.swift in Sources */,
 				25E6860B2030DF3600C0EC4B /* Message.swift in Sources */,
+				2572037D203B246700B2B6EA /* ChangeButtonBackgroundForState.swift in Sources */,
 				25985E342034787E00E7B5A3 /* ChatCollectionViewCell.swift in Sources */,
 				258F164A2029E4F0001824FB /* DataService.swift in Sources */,
 				258F164F2029FBE4001824FB /* Constants.swift in Sources */,
 				2577F46320333A5B001FED09 /* BindViewToKeyboardExtension.swift in Sources */,
 				258F1654202A0C6D001824FB /* AuthService.swift in Sources */,
+				2572037B203AEDB700B2B6EA /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

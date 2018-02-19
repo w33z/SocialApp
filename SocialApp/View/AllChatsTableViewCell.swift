@@ -101,7 +101,7 @@ class AllChatsTableViewCell: UITableViewCell {
     func configureCell(_ message: Message){
         
         if let id = message.getChatPartnerID() {
-            DataService.instance.getUserData(toID: id, handler: { (userData) in
+            UserService.instance.getUserData(toID: id, handler: { (userData) in
                 self.senderTitle.text = userData["username"] as? String
                 if let url = userData["profileImageURL"] as? String {
                     self.avatarPicture.loadImageUsingCache(urlString: url)

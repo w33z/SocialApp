@@ -9,6 +9,7 @@
 
 import UIKit
 import Firebase
+import SlideMenuControllerSwift
 
 class HomeViewController: UIViewController {
 
@@ -24,7 +25,7 @@ class HomeViewController: UIViewController {
     
     private let backgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.5376499891, green: 0.9457976222, blue: 0.8239424825, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.537254902, green: 0.9450980392, blue: 0.8235294118, alpha: 1)
         return view
     }()
     
@@ -45,7 +46,7 @@ class HomeViewController: UIViewController {
     
     private let messagesTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        tableView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 35, bottom: 0, right: 35)
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 35, bottom: 0, right: 35)
@@ -65,7 +66,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         messagesTableView.delegate = self
         messagesTableView.dataSource = self
         
@@ -73,10 +74,10 @@ class HomeViewController: UIViewController {
         setUpView()
         setUpConstrains()
         
-        DataService.instance.fetchDBUsers { (users) in
+        UserService.instance.fetchDBUsers { (users) in
             self.users = users
         }
-        DataService.instance.fetchUserMessages { (messages,newMessagesCounter) in
+        MessageService.instance.fetchUserMessages { (messages,newMessagesCounter) in
             self.messages = messages.reversed()
             self.newMessageCounterLabel.text = "\(newMessagesCounter) New Messages"
 
@@ -144,8 +145,8 @@ class HomeViewController: UIViewController {
  
     fileprivate func setUpNavigationBar() {
         let menuButtonNavigation = UIBarButtonItem(customView: menuButton)
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(menuButtonAction))
-//        menuButtonNavigation.customView?.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(menuButtonAction(_:)))
+        menuButtonNavigation.customView?.addGestureRecognizer(tap)
         navigationItem.setLeftBarButton(menuButtonNavigation, animated: true)
     }
     
@@ -153,7 +154,6 @@ class HomeViewController: UIViewController {
         let chatVC = ChatViewController(collectionViewLayout: UICollectionViewFlowLayout())
         chatVC.user = user     
         navigationController?.pushViewController(chatVC, animated: true)
-        newMessageCounterLabel.text = "0 New Messages"
     }
     
     @objc fileprivate func newMessageButtonAction(_ sender: UIButton) {
@@ -166,6 +166,12 @@ class HomeViewController: UIViewController {
     @objc fileprivate func handleTimer(){
         DispatchQueue.main.async {
             self.messagesTableView.reloadData()
+        }
+    }
+
+    @objc fileprivate func menuButtonAction(_ gesture: UIGestureRecognizer){
+        if let slideMenuController = slideMenuController() {
+            slideMenuController.openLeft()
         }
     }
 }
@@ -194,8 +200,10 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
         
         guard let chatPartnerID = message.getChatPartnerID() else { return }
         
-        DataService.instance.getUser(toID: chatPartnerID) { (user) in
+        UserService.instance.getUser(toID: chatPartnerID) { (user) in
             self.showTypingMessageVC(user)
         }
+        newMessageCounterLabel.text = "0 New Messages"
     }
 }
+

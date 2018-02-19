@@ -19,7 +19,7 @@ class ChooseUserTableViewController: UITableViewController {
         setUpNavigationBar()
         tableView.tableFooterView = UIView()
         
-        DataService.instance.fetchDBUsers { (users) in
+        UserService.instance.fetchDBUsers { (users) in
             self.users = users
             
             DispatchQueue.main.async {

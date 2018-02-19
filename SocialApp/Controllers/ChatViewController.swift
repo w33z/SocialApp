@@ -90,7 +90,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         self.collectionView!.register(ChatCollectionViewCell.self, forCellWithReuseIdentifier: CHAT_COLLECTIONVIEW_CELL)
         
         if let userID = user?.userID {
-            DataService.instance.fetchMessages(userID: userID) { (messages) in
+            MessageService.instance.fetchMessages(userID: userID) { (messages) in
                 self.messages = messages
                 
                 //To reduce profile image bugs
@@ -179,7 +179,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         cell.messageBGWidthAnchor?.constant = estimateFrameForTest(text: message.text!).width + 64
         
         if message.fromID == Auth.auth().currentUser?.uid {
-            DataService.instance.getUser(toID: message.fromID!, handler: { (user) in
+            UserService.instance.getUser(toID: message.fromID!, handler: { (user) in
                 cell.configureCell(message, user.profileImageURL!)
             })
 
@@ -246,7 +246,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         let messageData: [String : Any] = ["text": messageTextView.text, "fromID": Auth.auth().currentUser?.uid as Any, "toID": user?.userID as Any, "timestamp": timestamp]
         
-        DataService.instance.sendMessege(withGroupKey: nil, messageData: messageData as Dictionary<String, AnyObject>) { (complete) in
+        MessageService.instance.sendMessege(withGroupKey: nil, messageData: messageData as Dictionary<String, AnyObject>) { (complete) in
             if complete {
                 print("message sent")
             } else {

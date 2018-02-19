@@ -13,7 +13,8 @@ target 'SocialApp' do
   pod 'ABSteppedProgressBar'
   pod 'DLRadioButton', '~> 1.4'
   pod 'SVProgressHUD'
-
+  pod 'SlideMenuControllerSwift'
+  
   target 'SocialAppTests' do
     inherit! :search_paths
     # Pods for testing

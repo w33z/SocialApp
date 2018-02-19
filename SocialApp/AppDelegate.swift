@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SlideMenuControllerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,10 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
 //        try! Auth.auth().signOut() //for testing
+
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: AuthViewController())
         } else {
-            window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
+            let navHomeVC = UINavigationController(rootViewController: HomeViewController())
+            let menuVC = MenuViewController()
+            let slideMenuController = SlideMenuController(mainViewController: navHomeVC, leftMenuViewController: menuVC)
+            window?.rootViewController = slideMenuController
         }
         window?.makeKeyAndVisible()
         

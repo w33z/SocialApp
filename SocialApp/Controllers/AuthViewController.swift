@@ -234,8 +234,10 @@ class AuthViewController: UIViewController {
         
         if usernameField != "" && passwordField != "" {
             DispatchQueue.global(qos: .userInitiated).async {
-                SVProgressHUD.show()
+//                SVProgressHUD.show()
                 DispatchQueue.main.async {
+                    SVProgressHUD.show()
+
                     AuthService.instance.loginUser(email: usernameField, password: passwordField, loginComplete: { (success, error) in
                         if success {
                             SVProgressHUD.dismiss()

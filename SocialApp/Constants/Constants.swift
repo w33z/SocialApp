@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import Firebase
+
+// Firebase References
+let STORAGE_REF = Storage.storage().reference()
+let DB_BASE = Database.database().reference()
 
 //Fonts
 let AVENIR_MEDIUM = UIFont(name: "Avenir-Medium", size: 14)!
