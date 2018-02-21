@@ -37,6 +37,16 @@ class MenuViewController: UIViewController {
         return button
     }()
     
+    private let messagesButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "Messages"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
+        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.addTarget(self, action: #selector(messagesButtonAction(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private let profileButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "Profile"), for: .normal)
@@ -99,6 +109,7 @@ class MenuViewController: UIViewController {
         view.addSubview(dismissButton)
         
         menuButtonStackView.addArrangedSubview(homeButton)
+        menuButtonStackView.addArrangedSubview(messagesButton)
         menuButtonStackView.addArrangedSubview(profileButton)
         menuButtonStackView.addArrangedSubview(captureButton)
         menuButtonStackView.addArrangedSubview(settingsButton)
@@ -117,14 +128,14 @@ class MenuViewController: UIViewController {
             ])
         
         logoutButton.addConstraints([
-            equal(view, \.bottomAnchor, \.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            equal(view, \.bottomAnchor, \.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             equal(view, \.leadingAnchor, constant: 35),
             equal(view, \.trailingAnchor, constant: -35),
             equal(\.heightAnchor, to: 50)
             ])
         
         menuButtonStackView.addConstraints([
-            equal(dismissButton, \.topAnchor,\.bottomAnchor, constant: 80),
+            equal(dismissButton, \.topAnchor,\.bottomAnchor, constant: 50),
             equal(view, \.leadingAnchor),
             equal(view, \.trailingAnchor),
             equal(logoutButton, \.bottomAnchor, \.topAnchor, constant: -50)
@@ -138,11 +149,21 @@ class MenuViewController: UIViewController {
     }
     
     @objc fileprivate func homeButtonAction(_ sender: UIButton){
-        print("home")
+        let homeVC = HomeCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let navHomeVC = UINavigationController(rootViewController: homeVC)
+        slideMenuController()?.changeMainViewController(navHomeVC, close: true)
+    }
+    
+    @objc fileprivate func messagesButtonAction(_ sender: UIButton){
+        let messageVC = MessageViewController()
+        let navMessageVC = UINavigationController(rootViewController: messageVC)
+        slideMenuController()?.changeMainViewController(navMessageVC, close: true)
     }
     
     @objc fileprivate func profileButtonAction(_ sender: UIButton){
-        print("profile")
+        let profileVC = ProfileViewController()
+        let navProfileVC = UINavigationController(rootViewController: profileVC)
+        slideMenuController()?.changeMainViewController(navProfileVC, close: true)
     }
     
     @objc fileprivate func captureButtonAction(_ sender: UIButton){
@@ -151,6 +172,16 @@ class MenuViewController: UIViewController {
     
     @objc fileprivate func settingButtonAction(_ sender: UIButton){
         print("sett")
+        
+        //testing profileVC
+        UserService.instance.getUser(toID: "ymkzGgdYdodsXyS36iNHlUkOcbr2") { (user) in
+            let profileVC = ProfileViewController()
+            profileVC.user = user
+            profileVC.configureProfile(user)
+            let navProfileVC = UINavigationController(rootViewController: profileVC)
+            self.slideMenuController()?.changeMainViewController(navProfileVC, close: true)
+        }
+        
     }
     
     @objc fileprivate func logoutButtonAction(_ sender: UIButton){

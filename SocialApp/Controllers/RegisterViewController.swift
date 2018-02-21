@@ -232,8 +232,8 @@ class RegisterViewController: UIViewController {
         self.hideKeyboardWhenTappedAround()
         self.moveViewWithKeyboard()
         
-        setUpView()
-        setUpConstrains()
+        addViews()
+        addConstrains()
         
         array.append(checkBoxFemale)
         checkBoxMale.otherButtons = array
@@ -246,7 +246,7 @@ class RegisterViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    fileprivate func setUpConstrains() {
+    fileprivate func addConstrains() {
         backgroundImage.addConstraints([
             equal(view, \.topAnchor),
             equal(view, \.bottomAnchor),
@@ -274,7 +274,7 @@ class RegisterViewController: UIViewController {
     var firstStep: [UIView] = []
     var secondStep: [UIView] = []
     
-    fileprivate func setUpView() {
+    fileprivate func addViews() {
         navigationController?.navigationBar.topItem?.title = " "
         navigationItem.title = "Registration"
         
@@ -450,7 +450,7 @@ class RegisterViewController: UIViewController {
                     AuthService.instance.registerUser(email: emailField, password: passwordField, username: userField, gender: self.genderValue, birthday: self.selectedBirthDayDate, profileImage: profileImage, userCreationComplete: { (success, error) in
                         if success {
                             SVProgressHUD.dismiss()
-                            self.present(UINavigationController(rootViewController: HomeViewController()), animated: true, completion: nil)
+                            self.present(UINavigationController(rootViewController: MessageViewController()), animated: true, completion: nil)
                         } else {
                             SVProgressHUD.dismiss()
                             let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)

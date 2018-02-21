@@ -1,6 +1,6 @@
 //
 //
-//  HomeViewController.swift
+//  MessageViewController.swift
 //  SocialApp
 //
 //  Created by Bartosz Pawełczyk on 06.02.2018.
@@ -11,18 +11,11 @@ import UIKit
 import Firebase
 import SlideMenuControllerSwift
 
-class HomeViewController: UIViewController {
+class MessageViewController: UIViewController {
 
     var users = [User]()
     var messages = [Message]()
-    
-    private let menuButton: UIButton = {
-        let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "menu"), for: .normal)
-        button.contentMode = .scaleAspectFill
-        return button
-    }()
-    
+
     private let backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.537254902, green: 0.9450980392, blue: 0.8235294118, alpha: 1)
@@ -70,9 +63,8 @@ class HomeViewController: UIViewController {
         messagesTableView.delegate = self
         messagesTableView.dataSource = self
         
-        setUpNavigationBar()
-        setUpView()
-        setUpConstrains()
+        addViews()
+        addConstrains()
         
         UserService.instance.fetchDBUsers { (users) in
             self.users = users
@@ -89,15 +81,11 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setUpNavigationBar()
         navigationItem.title = "Messages"
     }
 
-    fileprivate func setUpConstrains() {
-        
-        menuButton.addConstraints([
-            equal(\.heightAnchor, to: 15),
-            equal(\.widthAnchor, to: 15)
-            ])
+    fileprivate func addConstrains() {
                 
         backgroundView.addConstraints([
             equal(view, \.safeAreaLayoutGuide.topAnchor),
@@ -132,7 +120,7 @@ class HomeViewController: UIViewController {
             ])
     }
     
-    fileprivate func setUpView() {
+    fileprivate func addViews() {
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         setUpNavigationBar()
         
@@ -142,14 +130,7 @@ class HomeViewController: UIViewController {
         view.addSubview(messagesTableView)
         view.addSubview(newMessageButton)
     }
- 
-    fileprivate func setUpNavigationBar() {
-        let menuButtonNavigation = UIBarButtonItem(customView: menuButton)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(menuButtonAction(_:)))
-        menuButtonNavigation.customView?.addGestureRecognizer(tap)
-        navigationItem.setLeftBarButton(menuButtonNavigation, animated: true)
-    }
-    
+
     func showTypingMessageVC(_ user: User){
         let chatVC = ChatViewController(collectionViewLayout: UICollectionViewFlowLayout())
         chatVC.user = user     
@@ -168,15 +149,9 @@ class HomeViewController: UIViewController {
             self.messagesTableView.reloadData()
         }
     }
-
-    @objc fileprivate func menuButtonAction(_ gesture: UIGestureRecognizer){
-        if let slideMenuController = slideMenuController() {
-            slideMenuController.openLeft()
-        }
-    }
 }
 
-extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
+extension MessageViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }

@@ -14,7 +14,8 @@ target 'SocialApp' do
   pod 'DLRadioButton', '~> 1.4'
   pod 'SVProgressHUD'
   pod 'SlideMenuControllerSwift'
-  
+  pod 'PinterestLayout'
+
   target 'SocialAppTests' do
     inherit! :search_paths
     # Pods for testing

@@ -85,7 +85,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         super.viewDidLoad()
 
         addViews()
-        setUpConstraints()
+        addConstraints()
         
         self.collectionView!.register(ChatCollectionViewCell.self, forCellWithReuseIdentifier: CHAT_COLLECTIONVIEW_CELL)
         
@@ -126,7 +126,7 @@ class ChatViewController: UICollectionViewController, UICollectionViewDelegateFl
         view.addSubview(sendButton)
     }
     
-    fileprivate func setUpConstraints(){
+    fileprivate func addConstraints(){
         
         backViewForSafeArea.addConstraints([
             equal(view, \.leadingAnchor),

@@ -13,6 +13,9 @@
 		257203792039E67300B2B6EA /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257203782039E67300B2B6EA /* UserService.swift */; };
 		2572037B203AEDB700B2B6EA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2572037A203AEDB700B2B6EA /* MenuViewController.swift */; };
 		2572037D203B246700B2B6EA /* ChangeButtonBackgroundForState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */; };
+		25720383203DBC5A00B2B6EA /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25720382203DBC5A00B2B6EA /* HomeCollectionViewController.swift */; };
+		25720385203DBE9600B2B6EA /* SetUpNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25720384203DBE9600B2B6EA /* SetUpNavigationBar.swift */; };
+		25720387203DC2F900B2B6EA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25720386203DC2F900B2B6EA /* ProfileViewController.swift */; };
 		2577F4592031EFE0001FED09 /* ChooseUserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */; };
 		2577F45B2031F349001FED09 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45A2031F349001FED09 /* User.swift */; };
 		2577F45D2031FD8E001FED09 /* ChooseUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F45C2031FD8E001FED09 /* ChooseUserTableViewCell.swift */; };
@@ -20,7 +23,7 @@
 		2577F46120320DE2001FED09 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46020320DE2001FED09 /* ChatViewController.swift */; };
 		2577F46320333A5B001FED09 /* BindViewToKeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */; };
 		258F16232029D9B9001824FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16222029D9B9001824FB /* AppDelegate.swift */; };
-		258F16252029D9B9001824FB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16242029D9B9001824FB /* HomeViewController.swift */; };
+		258F16252029D9B9001824FB /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258F16242029D9B9001824FB /* MessageViewController.swift */; };
 		258F16282029D9B9001824FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258F16262029D9B9001824FB /* Main.storyboard */; };
 		258F162A2029D9B9001824FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 258F16292029D9B9001824FB /* Assets.xcassets */; };
 		258F162D2029D9B9001824FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258F162B2029D9B9001824FB /* LaunchScreen.storyboard */; };
@@ -57,6 +60,9 @@
 		257203782039E67300B2B6EA /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		2572037A203AEDB700B2B6EA /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeButtonBackgroundForState.swift; sourceTree = "<group>"; };
+		25720382203DBC5A00B2B6EA /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
+		25720384203DBE9600B2B6EA /* SetUpNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetUpNavigationBar.swift; sourceTree = "<group>"; };
+		25720386203DC2F900B2B6EA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUserTableViewController.swift; sourceTree = "<group>"; };
 		2577F45A2031F349001FED09 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2577F45C2031FD8E001FED09 /* ChooseUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUserTableViewCell.swift; sourceTree = "<group>"; };
@@ -65,7 +71,7 @@
 		2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindViewToKeyboardExtension.swift; sourceTree = "<group>"; };
 		258F161F2029D9B9001824FB /* SocialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		258F16222029D9B9001824FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		258F16242029D9B9001824FB /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		258F16242029D9B9001824FB /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		258F16272029D9B9001824FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		258F16292029D9B9001824FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		258F162C2029D9B9001824FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -174,12 +180,14 @@
 		258F16442029DBCA001824FB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				258F16242029D9B9001824FB /* HomeViewController.swift */,
+				258F16242029D9B9001824FB /* MessageViewController.swift */,
 				258F164B2029E777001824FB /* AuthViewController.swift */,
 				258F1655202A0CBD001824FB /* RegisterViewController.swift */,
 				2577F4582031EFE0001FED09 /* ChooseUserTableViewController.swift */,
 				2577F46020320DE2001FED09 /* ChatViewController.swift */,
 				2572037A203AEDB700B2B6EA /* MenuViewController.swift */,
+				25720382203DBC5A00B2B6EA /* HomeCollectionViewController.swift */,
+				25720386203DC2F900B2B6EA /* ProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 				2577F45E20320693001FED09 /* CacheImageView.swift */,
 				2577F46220333A5B001FED09 /* BindViewToKeyboardExtension.swift */,
 				2572037C203B246700B2B6EA /* ChangeButtonBackgroundForState.swift */,
+				25720384203DBE9600B2B6EA /* SetUpNavigationBar.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -431,6 +440,7 @@
 				"${BUILT_PRODUCTS_DIR}/DLRadioButton/DLRadioButton.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/PinterestLayout/PinterestLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SlideMenuControllerSwift/SlideMenuControllerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -442,6 +452,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DLRadioButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PinterestLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SlideMenuControllerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -476,14 +487,17 @@
 			files = (
 				258F16472029E462001824FB /* UIViewForCreatingNSLayoutContraints.swift in Sources */,
 				25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */,
-				258F16252029D9B9001824FB /* HomeViewController.swift in Sources */,
+				258F16252029D9B9001824FB /* MessageViewController.swift in Sources */,
+				25720383203DBC5A00B2B6EA /* HomeCollectionViewController.swift in Sources */,
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
 				2577F45F20320693001FED09 /* CacheImageView.swift in Sources */,
+				25720387203DC2F900B2B6EA /* ProfileViewController.swift in Sources */,
 				2577F45D2031FD8E001FED09 /* ChooseUserTableViewCell.swift in Sources */,
 				257203792039E67300B2B6EA /* UserService.swift in Sources */,
 				258F1658202A0E64001824FB /* UIViewControllerPresentExtension.swift in Sources */,
 				257203772039E58600B2B6EA /* MessageService.swift in Sources */,
 				25E686062030B23800C0EC4B /* AllChatsTableViewCell.swift in Sources */,
+				25720385203DBE9600B2B6EA /* SetUpNavigationBar.swift in Sources */,
 				2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */,
 				258F1656202A0CBD001824FB /* RegisterViewController.swift in Sources */,
 				2577F45B2031F349001FED09 /* User.swift in Sources */,

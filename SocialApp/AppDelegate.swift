@@ -21,12 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-//        try! Auth.auth().signOut() //for testing
 
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: AuthViewController())
         } else {
-            let navHomeVC = UINavigationController(rootViewController: HomeViewController())
+            let navHomeVC = UINavigationController(rootViewController: MessageViewController())
             let menuVC = MenuViewController()
             let slideMenuController = SlideMenuController(mainViewController: navHomeVC, leftMenuViewController: menuVC)
             window?.rootViewController = slideMenuController

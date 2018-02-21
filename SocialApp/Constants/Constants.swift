@@ -21,4 +21,4 @@ let AVENIR_BLACK = UIFont(name: "Avenir-Black", size: 14)!
 let ALL_CHAT_MESSAGES_CELL_TABLEVIEW = "allChatMessagesCell"
 let CHOOSEUSER_CELL_TABLEVIEW = "userChooseCell"
 let CHAT_COLLECTIONVIEW_CELL = "chatCell"
-
+let PROFILE_PHOTOS_COLLECTIONVIEW_CELL = "profilePhotosCell"

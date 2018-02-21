@@ -114,8 +114,8 @@ class AuthViewController: UIViewController {
         }
         
         self.moveViewWithKeyboard()
-        setUpView()
-        setUpConstrains()
+        addViews()
+        addConstrains()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +137,7 @@ class AuthViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    fileprivate func setUpConstrains() {
+    fileprivate func addConstrains() {
         backgroundImage.addConstraints([
             equal(view, \.topAnchor),
             equal(view, \.bottomAnchor),
@@ -212,7 +212,7 @@ class AuthViewController: UIViewController {
             ])
     }
 
-    fileprivate func setUpView() {
+    fileprivate func addViews() {
         view.addSubview(backgroundImage)
         view.addSubview(logoImage)
         view.addSubview(loginForm)
@@ -233,15 +233,13 @@ class AuthViewController: UIViewController {
         guard let usernameField = usernameTextField.text,let passwordField = passwordTextField.text else { return }
         
         if usernameField != "" && passwordField != "" {
-            DispatchQueue.global(qos: .userInitiated).async {
-//                SVProgressHUD.show()
+            DispatchQueue.global(qos: .userInteractive).async {
+                SVProgressHUD.show()
                 DispatchQueue.main.async {
-                    SVProgressHUD.show()
-
                     AuthService.instance.loginUser(email: usernameField, password: passwordField, loginComplete: { (success, error) in
                         if success {
                             SVProgressHUD.dismiss()
-                            self.present(UINavigationController(rootViewController: HomeViewController()), animated: true, completion: nil)
+                            self.present(UINavigationController(rootViewController: MessageViewController()), animated: true, completion: nil)
                         } else {
                             SVProgressHUD.dismiss()
                             let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)

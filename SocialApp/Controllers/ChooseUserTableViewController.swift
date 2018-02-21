@@ -11,12 +11,12 @@ import UIKit
 class ChooseUserTableViewController: UITableViewController {
 
     var users = [User]()
-    var homeVC: HomeViewController?
+    var homeVC: MessageViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpNavigationBar()
+        setUpChooseUserNavigationBar()
         tableView.tableFooterView = UIView()
         
         UserService.instance.fetchDBUsers { (users) in
@@ -34,7 +34,7 @@ class ChooseUserTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func setUpNavigationBar() {
+    fileprivate func setUpChooseUserNavigationBar() {
         self.navigationItem.title = "Choose user"
         let dismissButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissView))
         dismissButton.setTitleTextAttributes([
