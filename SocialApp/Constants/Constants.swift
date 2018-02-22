@@ -14,6 +14,7 @@ let STORAGE_REF = Storage.storage().reference()
 let DB_BASE = Database.database().reference()
 
 //Fonts
+let AVENIR_BOOK = UIFont(name: "Avenir-Book", size: 14)!
 let AVENIR_MEDIUM = UIFont(name: "Avenir-Medium", size: 14)!
 let AVENIR_BLACK = UIFont(name: "Avenir-Black", size: 14)!
 

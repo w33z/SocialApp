@@ -133,12 +133,10 @@ class ProfileViewController: UIViewController {
         let layout = PinterestLayout()
         layout.delegate = self
         layout.cellPadding = 5
-        layout.numberOfColumns = 2
+        layout.numberOfColumns = 3
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL)
-        collectionView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        collectionView.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        collectionView.layer.borderWidth = 5
+        collectionView.register(ProfilePhotosCollectionViewCell.self, forCellWithReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL)
+        collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
         collectionView.showsVerticalScrollIndicator = false
         return collectionView
@@ -304,28 +302,52 @@ class ProfileViewController: UIViewController {
         
         userProfileImage.loadImageUsingCache(urlString: imageprofileURL)
     }
+    
+    var images = [
+        Image(image: #imageLiteral(resourceName: "10 - February 2018 (myphotopack.com)"), description: "Text"),
+        Image(image: #imageLiteral(resourceName: "Logo"), description: "logo"),
+        Image(image: #imageLiteral(resourceName: "06 - February 2018 (myphotopack.com)"), description: "TexBirthdayBirthdayt"),
+        Image(image: #imageLiteral(resourceName: "08 - February 2018 (myphotopack.com)"), description: "TextDscripdayBirtdayBirtdayBirtdayBirtdayBirtdayBirtdayBirttion text on some height bakbaksd"),
+        Image(image: #imageLiteral(resourceName: "Logo"), description: "logo")
+    ]
 }
 
 extension ProfileViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return images.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL, for: indexPath)
-        cell.backgroundColor = UIColor.blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL, for: indexPath) as! ProfilePhotosCollectionViewCell
+        
+        let image = images[indexPath.item]
+        
+        cell.configureCell(image)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ProfilePhotosCollectionViewCell
+        let selectedImageView = cell.profileImage
+        handleZoomInImageView(selectedImageView)
     }
 }
 
 extension ProfileViewController: PinterestLayoutDelegate {
     func collectionView(collectionView: UICollectionView, heightForImageAtIndexPath indexPath: IndexPath, withWidth: CGFloat) -> CGFloat {
-        return 50
+        
+        let image = images[indexPath.item].image
+        
+        return image.height(forWidth: withWidth)
     }
 
     func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: IndexPath, withWidth: CGFloat) -> CGFloat {
-        return 40
+        
+        let description = images[indexPath.item].description
+
+        return description.heightForWidth(width: withWidth, font: AVENIR_BOOK)
     }
 }
+
 
