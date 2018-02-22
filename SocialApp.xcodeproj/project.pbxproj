@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		15201D0B821D4E160F67D5A5 /* Pods_SocialApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB67AE87370B579F7C12F92 /* Pods_SocialApp.framework */; };
 		2551569A203EC413000C23DB /* ProfilePhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25515699203EC413000C23DB /* ProfilePhotosCollectionViewCell.swift */; };
-		2551569C203ED31C000C23DB /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2551569B203ED31C000C23DB /* Image.swift */; };
+		2551569C203ED31C000C23DB /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2551569B203ED31C000C23DB /* Photo.swift */; };
 		2551569E203EE7BE000C23DB /* CustomZoomForImageViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2551569D203EE7BE000C23DB /* CustomZoomForImageViews.swift */; };
 		2553155A202F5BFC004B0D3D /* OwnDateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25531559202F5BFC004B0D3D /* OwnDateFormat.swift */; };
 		257203772039E58600B2B6EA /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257203762039E58600B2B6EA /* MessageService.swift */; };
@@ -59,7 +59,7 @@
 /* Begin PBXFileReference section */
 		0116B7186547E057B5A3B253 /* Pods-SocialApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialApp/Pods-SocialApp.debug.xcconfig"; sourceTree = "<group>"; };
 		25515699203EC413000C23DB /* ProfilePhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosCollectionViewCell.swift; sourceTree = "<group>"; };
-		2551569B203ED31C000C23DB /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		2551569B203ED31C000C23DB /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		2551569D203EE7BE000C23DB /* CustomZoomForImageViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomZoomForImageViews.swift; path = SocialApp/Extensions/CustomZoomForImageViews.swift; sourceTree = SOURCE_ROOT; };
 		25531559202F5BFC004B0D3D /* OwnDateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnDateFormat.swift; sourceTree = "<group>"; };
 		257203762039E58600B2B6EA /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 			children = (
 				25E6860A2030DF3600C0EC4B /* Message.swift */,
 				2577F45A2031F349001FED09 /* User.swift */,
-				2551569B203ED31C000C23DB /* Image.swift */,
+				2551569B203ED31C000C23DB /* Photo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -498,7 +498,7 @@
 				25E6860420308E1300C0EC4B /* NewMessageCollectionViewCell.swift in Sources */,
 				258F16252029D9B9001824FB /* MessageViewController.swift in Sources */,
 				25720383203DBC5A00B2B6EA /* HomeCollectionViewController.swift in Sources */,
-				2551569C203ED31C000C23DB /* Image.swift in Sources */,
+				2551569C203ED31C000C23DB /* Photo.swift in Sources */,
 				258F164C2029E777001824FB /* AuthViewController.swift in Sources */,
 				2551569E203EE7BE000C23DB /* CustomZoomForImageViews.swift in Sources */,
 				2577F45F20320693001FED09 /* CacheImageView.swift in Sources */,

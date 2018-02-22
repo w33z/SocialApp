@@ -8,7 +8,7 @@
 
 import Foundation
 
-class User: NSObject {
+class User {
     private var _userID: String?
     private var _username: String?
     private var _email: String?

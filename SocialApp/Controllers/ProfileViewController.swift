@@ -9,10 +9,14 @@
 import UIKit
 import Firebase
 import PinterestLayout
+import SVProgressHUD
 
 class ProfileViewController: UIViewController {
     
     var user: User?
+    var photos = [Photo]()
+    var imagePicker: UIImagePickerController!
+    var timer: Timer?
     
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
@@ -25,11 +29,7 @@ class ProfileViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         view.layer.cornerRadius = 3
-        view.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-        view.layer.shadowOpacity = 0.15
-        view.layer.shadowOffset = CGSize(width: 0, height: 5)
-        view.layer.shadowRadius = 15
-        view.layer.shouldRasterize = true
+        view.layer.masksToBounds = true
         return view
     }()
     
@@ -129,11 +129,22 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
+    private let addPhotoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "addPhoto"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.9196777344, blue: 0.2715115017, alpha: 1)
+        button.isHidden = true
+        button.addTarget(self, action: #selector(showImagePicker(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var photosCollectionView: UICollectionView = {
         let layout = PinterestLayout()
         layout.delegate = self
-        layout.cellPadding = 5
-        layout.numberOfColumns = 3
+        layout.cellPadding = 3
+        layout.numberOfColumns = 2
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(ProfilePhotosCollectionViewCell.self, forCellWithReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL)
         collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -148,17 +159,28 @@ class ProfileViewController: UIViewController {
         photosCollectionView.delegate = self
         photosCollectionView.dataSource = self
         
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
         addViews()
         addConstraints()
         
         if user?.userID == nil {
+            followButton.isHidden = true
+            
             guard let uid = Auth.auth().currentUser?.uid else { return }
 
             UserService.instance.getUser(toID: uid) { (user) in
                 self.user = user
                 self.configureProfile(user)
             }
+            
+            downloadPhotos(uid: uid)
+            addPhotoButton.isHidden = false
+        }else {
+            downloadPhotos(uid: user!.userID!)
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -190,8 +212,9 @@ class ProfileViewController: UIViewController {
         statsBackgroundView.addSubview(followersCounterLabel)
         statsBackgroundView.addSubview(followingCounterLabel)
         
-        backView.addSubview(photosCollectionView)
+        view.addSubview(photosCollectionView)
         backView.addSubview(followButton)
+        backView.addSubview(addPhotoButton)
     }
     
     fileprivate func addConstraints() {
@@ -281,6 +304,13 @@ class ProfileViewController: UIViewController {
             equal(backView, \.trailingAnchor),
             equal(\.heightAnchor, to: 60)
             ])
+        
+        addPhotoButton.addConstraints([
+            equal(backView, \.bottomAnchor),
+            equal(backView, \.leadingAnchor),
+            equal(backView, \.trailingAnchor),
+            equal(\.heightAnchor, to: 60)
+            ])
 
         photosCollectionView.addConstraints([
             equal(statsBackgroundView, \.topAnchor, \.bottomAnchor, constant: 0),
@@ -288,6 +318,28 @@ class ProfileViewController: UIViewController {
             equal(view, \.trailingAnchor, constant: -15),
             equal(followButton, \.bottomAnchor, \.topAnchor, constant: 0)
             ])
+    }
+    
+    @objc fileprivate func showImagePicker(_ sender: UIButton) {
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func handleTimer(){
+        DispatchQueue.main.async {
+            self.photosCollectionView.reloadData()
+        }
+    }
+    
+    fileprivate func downloadPhotos(uid: String){
+        DataService.instance.fetchUserPhotos(uid: uid) { (photos) in
+            self.photos = photos.reversed()
+            
+            //To reduce profile image bugs
+            self.timer?.invalidate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleTimer), userInfo: nil, repeats: false)
+        }
     }
     
     func configureProfile(_ user: User) {
@@ -302,25 +354,17 @@ class ProfileViewController: UIViewController {
         
         userProfileImage.loadImageUsingCache(urlString: imageprofileURL)
     }
-    
-    var images = [
-        Image(image: #imageLiteral(resourceName: "10 - February 2018 (myphotopack.com)"), description: "Text"),
-        Image(image: #imageLiteral(resourceName: "Logo"), description: "logo"),
-        Image(image: #imageLiteral(resourceName: "06 - February 2018 (myphotopack.com)"), description: "TexBirthdayBirthdayt"),
-        Image(image: #imageLiteral(resourceName: "08 - February 2018 (myphotopack.com)"), description: "TextDscripdayBirtdayBirtdayBirtdayBirtdayBirtdayBirtdayBirttion text on some height bakbaksd"),
-        Image(image: #imageLiteral(resourceName: "Logo"), description: "logo")
-    ]
 }
 
 extension ProfileViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return photos.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PROFILE_PHOTOS_COLLECTIONVIEW_CELL, for: indexPath) as! ProfilePhotosCollectionViewCell
         
-        let image = images[indexPath.item]
+        let image = photos[indexPath.item]
         
         cell.configureCell(image)
         
@@ -337,16 +381,69 @@ extension ProfileViewController: UICollectionViewDelegate,UICollectionViewDataSo
 extension ProfileViewController: PinterestLayoutDelegate {
     func collectionView(collectionView: UICollectionView, heightForImageAtIndexPath indexPath: IndexPath, withWidth: CGFloat) -> CGFloat {
         
-        let image = images[indexPath.item].image
+        let imageView = UIImageView()
         
+        if let imageURL = photos[indexPath.item].imageURL {
+            imageView.loadImageUsingCache(urlString: imageURL)
+        }
+        
+        guard let image = imageView.image else { return 120 }
         return image.height(forWidth: withWidth)
     }
 
     func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: IndexPath, withWidth: CGFloat) -> CGFloat {
         
-        let description = images[indexPath.item].description
+        guard let description = photos[indexPath.item].description else { return 20 }
 
         return description.heightForWidth(width: withWidth, font: AVENIR_BOOK)
+    }
+}
+
+extension ProfileViewController: UINavigationControllerDelegate,UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        var selectedImage: UIImage?
+        
+        if let editedImage = info[UIImagePickerControllerEditedImage
+            ] as? UIImage{
+            selectedImage = editedImage
+        } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            selectedImage = originalImage
+        }
+        
+        if let selectedImage = selectedImage {
+//            avatarChangeButton.setImage(selectedImage, for: .normal)
+            
+            let alert = UIAlertController(title: "New photo!", message: "Add description to your photo", preferredStyle: .alert)
+            alert.addTextField(configurationHandler: { (textField) in
+                textField.placeholder = "Description..."
+            })
+            alert.addAction(UIAlertAction(title: "Upload", style: .default, handler: { (alertAction) in
+                guard let description = alert.textFields![0].text else { return }
+
+                DispatchQueue.global(qos: .userInteractive).async {
+                    SVProgressHUD.show()
+                    DispatchQueue.main.async {
+                        DataService.instance.uploadUserPhotos(profileImage: selectedImage,text: description, handler: { (complete) in
+                            if complete {
+                                SVProgressHUD.dismiss()
+                                self.photosCollectionView.reloadData()
+                            } else {
+                                print("Photo uploading error")
+                            }
+                        })
+                    }
+                }
+            }))
+            picker.dismiss(animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }
 

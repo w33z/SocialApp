@@ -24,7 +24,14 @@ extension UIViewController {
         
         if let keyWindow = UIApplication.shared.keyWindow {
             blackBGView = UIView(frame: keyWindow.frame)
-            blackBGView?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
+            
+            let blurEffect = UIBlurEffect(style: .dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = blackBGView!.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            blackBGView?.addSubview(blurEffectView)
+            
+//            blackBGView?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             blackBGView?.alpha = 0
             
             keyWindow.addSubview(blackBGView!)

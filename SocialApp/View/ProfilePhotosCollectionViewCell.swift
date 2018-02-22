@@ -80,8 +80,10 @@ class ProfilePhotosCollectionViewCell: UICollectionViewCell {
             ])
     }
     
-    func configureCell(_ image: Image) {
-        profileImage.image = image.image
-        descriptionLabel.text = image.description
+    func configureCell(_ photo: Photo) {
+        guard let imageURL = photo.imageURL, let description = photo.description else { return }
+        
+        profileImage.loadImageUsingCache(urlString: imageURL)
+        descriptionLabel.text = description
     }
 }

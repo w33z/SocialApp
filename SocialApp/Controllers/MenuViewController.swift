@@ -32,7 +32,7 @@ class MenuViewController: UIViewController {
         button.setImage(#imageLiteral(resourceName: "Home"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
         button.addTarget(self, action: #selector(homeButtonAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -42,7 +42,7 @@ class MenuViewController: UIViewController {
         button.setImage(#imageLiteral(resourceName: "Messages"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
         button.addTarget(self, action: #selector(messagesButtonAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -52,7 +52,7 @@ class MenuViewController: UIViewController {
         button.setImage(#imageLiteral(resourceName: "Profile"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
         button.addTarget(self, action: #selector(profileButtonAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -62,7 +62,7 @@ class MenuViewController: UIViewController {
         button.setImage(#imageLiteral(resourceName: "Capture"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
         button.addTarget(self, action: #selector(captureButtonAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -72,7 +72,7 @@ class MenuViewController: UIViewController {
         button.setImage(#imageLiteral(resourceName: "Settings"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setBackgroundColor(#colorLiteral(red: 0.7058823529, green: 0.6431372549, blue: 0.8509803922, alpha: 1), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
         button.addTarget(self, action: #selector(settingButtonAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -174,7 +174,7 @@ class MenuViewController: UIViewController {
         print("sett")
         
         //testing profileVC
-        UserService.instance.getUser(toID: "ymkzGgdYdodsXyS36iNHlUkOcbr2") { (user) in
+        UserService.instance.getUser(toID: "avLjQ8VGqFX9J9tge3CEYZcfyoE2") { (user) in
             let profileVC = ProfileViewController()
             profileVC.user = user
             profileVC.configureProfile(user)

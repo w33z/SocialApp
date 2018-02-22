@@ -20,26 +20,16 @@ class AuthService {
                 return
             }
             
-            let imageName = NSUUID().uuidString
-            let storageRef = DataService.instance.REF_STORAGE.child("profile_images").child("\(imageName).png")
-            
-            if let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+            DataService.instance.uploadUserProfileImage(profileImage: profileImage, handler: { (profileImageURL, complete) in
                 
-                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    
-                    if error != nil {
-                        print(String(describing: error?.localizedDescription))
-                        return
-                    }
-                    
-                    if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
-                        
-                        let userData = ["provider": user.providerID, "email": user.email, "username": username,"gender": gender,"birthday": birthday,"profileImageURL":profileImageUrl]
-                        UserService.instance.createDBUser(uid: user.uid, userData: userData as Dictionary<String, AnyObject>)
-                        userCreationComplete(true,nil)
-                    }
-                })
-            }
+                if complete {
+                    let userData = ["provider": user.providerID, "email": user.email, "username": username,"gender": gender,"birthday": birthday,"profileImageURL":profileImageURL]
+                    UserService.instance.createDBUser(uid: user.uid, userData: userData as Dictionary<String, AnyObject>)
+                    userCreationComplete(true,nil)
+                } else {
+                    print(String(describing: error?.localizedDescription))
+                }
+            })
         }
     }
     
